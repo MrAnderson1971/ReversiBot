@@ -25,6 +25,14 @@ public class Player {
         return piece;
     }
 
+    public Tree getAgent() {
+        return agent;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     /*
     EFFECTS: true if other is equal to this.
      */

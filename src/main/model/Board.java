@@ -27,6 +27,10 @@ public class Board {
         this.board[4][3] = player2.getPiece();
     }
 
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
     /*
     REQUIRES: x, y < 7
     EFFECTS: true if spot at coordinates is 0
@@ -42,6 +46,10 @@ public class Board {
      */
     public void makeMove(int x, int y) {
         board[x][y] = currentPlayer.getPiece();
+        for (int[] coord : getCapturable(x, y)) {
+            board[coord[0]][coord[1]] *= -1; // capture pieces by flipping them
+        }
+        switchPlayers();
     }
 
     /*
@@ -57,6 +65,31 @@ public class Board {
      */
     public void switchPlayers() {
         currentPlayer = getOpponent();
+    }
+
+    /*
+    EFFECTS: returns Player that won, null if tie.
+     */
+    public Player getWinner() {
+        int player1count = Utils.countObjects(board, player1.getPiece());
+        int player2count = Utils.countObjects(board, player2.getPiece());
+
+        // player with most pieces at the end of the game wins
+        if (player2count > player1count) {
+            return player2;
+        } else if (player1count > player2count) {
+            return player1;
+        }
+
+        // tie if same amount of pieces
+        return null;
+    }
+
+    /*
+    EFFECTS: true if game over
+     */
+    public boolean isGameOver() {
+        return getPossibleMoves().size() == 0; // game over if no possible moves left
     }
 
     /*
@@ -130,12 +163,12 @@ public class Board {
         ArrayList<int[]> possibleMoves = getPossibleMoves();
 
         StringBuilder s = new StringBuilder();
-        s.append(" A B C D E F G H I\n");
+        s.append(" A B C D E F G H\n");
         s.append(Utils.repeatString("-", 16));
         int i = 0;
-        for (int x = 0; x < 8; x++) {
+        for (int y = 0; y < 8; y++) {
             s.append("\n");
-            for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
                 if (Utils.listContainsArray(possibleMoves, new int[] {x, y})) {
                     s.append("|.");
                 } else if (board[x][y] == player1.getPiece()) {
