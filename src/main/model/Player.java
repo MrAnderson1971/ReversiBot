@@ -9,6 +9,8 @@ public class Player {
     private Tree agent;
     private String name;
 
+    // integer that represents this player's piece on the board
+    // should be 1 or -1
     private int piece;
 
     /*
@@ -20,12 +22,16 @@ public class Player {
         this.name = name;
     }
 
+    public int getPiece() {
+        return piece;
+    }
+
     /*
     EFFECTS: true if other is equal to this.
      */
     @Override
     public boolean equals(Object other) {
-        if (! (other instanceof Player)) {
+        if (!(other instanceof Player)) {
             return false;
         }
         Player p = (Player) other;
