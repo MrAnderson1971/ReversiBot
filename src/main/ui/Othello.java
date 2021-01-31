@@ -39,11 +39,11 @@ public class Othello {
             } while (! (0 < difficulty && difficulty <= 10));
 
             game = new Game(new Player(1, null, name),
-                    new Player(2, new Tree(difficulty), "Computer"));
+                    new Player(-1, new Tree(difficulty), "Computer"));
 
         } else {
             game = new Game(new Player(1, null, name),
-                    new Player(2, null, "Player 2"));
+                    new Player(-1, null, "Player 2"));
         }
     }
 
