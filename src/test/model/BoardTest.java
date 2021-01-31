@@ -3,6 +3,8 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
@@ -11,29 +13,42 @@ class BoardTest {
 
     @BeforeEach
     void runBefore() {
-        defaultBoard = new Board(new Player(1, null, "1"), new Player(-1, null, "-1"));
+        defaultBoard = new Board(new Player(1, null, "1"),
+                new Player(-1, null, "-1"));
     }
 
     @Test
     void testToString() {
-        assertEquals("-----------------\n" +
-                "| | | | | | | | |\n" +
+        assertEquals(" A B C D E F G H I\n" +
                 "-----------------\n" +
-                "| | | | | | | | |\n" +
+                "| | | | | | | | |0\n" +
                 "-----------------\n" +
-                "| | | | | | | | |\n" +
+                "| | | | | | | | |1\n" +
                 "-----------------\n" +
-                "| | | |X|O| | | |\n" +
+                "| | | | |.| | | |2\n" +
                 "-----------------\n" +
-                "| | | |O|X| | | |\n" +
+                "| | | |X|O|.| | |3\n" +
                 "-----------------\n" +
-                "| | | | | | | | |\n" +
+                "| | |.|O|X| | | |4\n" +
                 "-----------------\n" +
-                "| | | | | | | | |\n" +
+                "| | | |.| | | | |5\n" +
                 "-----------------\n" +
-                "| | | | | | | | |\n" +
+                "| | | | | | | | |6\n" +
+                "-----------------\n" +
+                "| | | | | | | | |7\n" +
                 "-----------------", defaultBoard.toString());
     }
 
+    @Test
+    void testGetCapturable() {
+        ArrayList<int[]> twoFour = defaultBoard.getCapturable(2, 4);
+        assertEquals(1, twoFour.size());
+        assertTrue(twoFour.get(0)[0] == 3 && twoFour.get(0)[1] == 4);
+    }
+
+    @Test
+    void testGetPossibleMoves() {
+        assertEquals(4, defaultBoard.getPossibleMoves().size());
+    }
 
 }
