@@ -1,7 +1,5 @@
 package model;
 
-import ui.Utils;
-
 import java.util.*;
 
 /*
@@ -47,6 +45,21 @@ public class Board {
     }
 
     /*
+    EFFECTS: returns player that's opponent to currentPlayer
+     */
+    public Player getOpponent() {
+        return (currentPlayer == player1) ? player2 : player1;
+    }
+
+    /*
+    MODIFIERS: this
+    EFFECTS: changes currentPlayer to opponent
+     */
+    public void switchPlayers() {
+        currentPlayer = getOpponent();
+    }
+
+    /*
     EFFECTS: returns list of all possible moves for currentPlayer
      */
     public ArrayList<int[]> getPossibleMoves() {
@@ -68,7 +81,7 @@ public class Board {
     EFFECTS: true if valid move for currentPlayer
      */
     public boolean isPossibleMove(int x, int y) {
-        return getCapturable(x, y).size() > 0;
+        return board[x][y] == 0 && getCapturable(x, y).size() > 0;
     }
 
     /*
@@ -123,13 +136,13 @@ public class Board {
         for (int x = 0; x < 8; x++) {
             s.append("\n");
             for (int y = 0; y < 8; y++) {
-                if (possibleMoves.contains(new int[]{x, y})) {
+                if (Utils.listContainsArray(possibleMoves, new int[] {x, y})) {
                     s.append("|.");
                 } else if (board[x][y] == player1.getPiece()) {
                     s.append("|X");
                 } else if (board[x][y] == player2.getPiece()) {
                     s.append("|O");
-                } else {
+                } else { // empty space
                     s.append("| ");
                 }
             }

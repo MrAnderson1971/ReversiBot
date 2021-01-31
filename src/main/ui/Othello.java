@@ -48,6 +48,10 @@ public class Othello {
         System.out.println(game.getBoard());
     }
 
+    /*
+    REQUIRES: Scanner object that takes input
+    EFFECTS: returns # of human players playing
+     */
     private int getNumPlayers(Scanner scan) {
         int numPlayers = -1;
         do {

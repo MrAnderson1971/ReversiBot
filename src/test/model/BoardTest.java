@@ -20,23 +20,23 @@ class BoardTest {
     @Test
     void testToString() {
         assertEquals(" A B C D E F G H I\n" +
-                "-----------------\n" +
+                "----------------\n" +
                 "| | | | | | | | |0\n" +
-                "-----------------\n" +
+                "----------------\n" +
                 "| | | | | | | | |1\n" +
-                "-----------------\n" +
+                "----------------\n" +
                 "| | | | |.| | | |2\n" +
-                "-----------------\n" +
+                "----------------\n" +
                 "| | | |X|O|.| | |3\n" +
-                "-----------------\n" +
+                "----------------\n" +
                 "| | |.|O|X| | | |4\n" +
-                "-----------------\n" +
+                "----------------\n" +
                 "| | | |.| | | | |5\n" +
-                "-----------------\n" +
+                "----------------\n" +
                 "| | | | | | | | |6\n" +
-                "-----------------\n" +
+                "----------------\n" +
                 "| | | | | | | | |7\n" +
-                "-----------------", defaultBoard.toString());
+                "----------------", defaultBoard.toString());
     }
 
     @Test
@@ -49,6 +49,13 @@ class BoardTest {
     @Test
     void testGetPossibleMoves() {
         assertEquals(4, defaultBoard.getPossibleMoves().size());
+    }
+
+    @Test
+    void testIsPossibleMove() {
+        assertFalse(defaultBoard.isPossibleMove(3, 3));
+        assertFalse(defaultBoard.isPossibleMove(0, 0));
+        assertTrue(defaultBoard.isPossibleMove(3, 5));
     }
 
 }
