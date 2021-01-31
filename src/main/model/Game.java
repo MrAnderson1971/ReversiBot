@@ -14,6 +14,8 @@ public class Game {
 
     private Board board;
 
+    private MoveHistory moveHistory;
+
     public Game(Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
@@ -22,9 +24,14 @@ public class Game {
 
         this.over = false;
         this.board = new Board(player1, player2);
+        this.moveHistory = new MoveHistory(player1, player2);
     }
 
     public Board getBoard() {
         return board;
+    }
+
+    public boolean isOver() {
+        return over;
     }
 }
