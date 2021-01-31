@@ -1,5 +1,9 @@
 package model;
 
+import ui.Othello;
+
+import java.util.Arrays;
+
 /*
 Represents one game
  */
@@ -24,7 +28,25 @@ public class Game {
 
         this.over = false;
         this.board = new Board(player1, player2);
-        this.moveHistory = new MoveHistory(player1, player2);
+        this.moveHistory = new MoveHistory();
+    }
+
+    /*
+    MODIFIES: this
+    EFFECTS: runs the game
+     */
+    public void update() {
+        if (board.getCurrentPlayer().getAgent() == null) {
+            int[] move = Othello.getMove(board.getPossibleMoves());
+
+            moveHistory.add(move, board.getCurrentPlayer().getName());
+            board.makeMove(move[0], move[1]);
+            System.out.println(Arrays.toString(move));
+
+            if (board.isGameOver()) {
+                over = true;
+            }
+        }
     }
 
     public Board getBoard() {

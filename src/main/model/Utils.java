@@ -26,4 +26,19 @@ public class Utils {
         }
         return false;
     }
+
+    /*
+    EFFECTS: counts the number of times i shows up in array.
+     */
+    public static int countObjects(int[][] array, int i) {
+        int count = 0;
+        for (int[] x : array) {
+            for (int y : x) {
+                if (y == i) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
 }

@@ -4,30 +4,35 @@ import java.util.*;
 
 public class MoveHistory {
 
-    private Player player1;
-    private Player player2;
-
     private ArrayList<int[]> moves;
+    private ArrayList<String> names;
 
     // EFFECTS: instantiate
-    public MoveHistory(Player player1, Player player2) {
-        this.player1 = player1;
-        this.player2 = player2;
-
+    public MoveHistory() {
         this.moves = new ArrayList<>();
+        this.names = new ArrayList<>();
     }
 
     /*
-    REQUIRES: x, y be valid moves
+    REQUIRES: be a valid move
     MODIFIES: this
     EFFECTS: adds move to record
      */
-    public void add(int x, int y) {
-        moves.add(new int[] {x, y});
+    public void add(int[] move, String name) {
+        moves.add(move);
+        names.add(name);
     }
 
+    /*
+    EFFECTS: returns string representation of this.
+     */
     @Override
     public String toString() {
-        return "";
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < moves.size(); i++) {
+            s.append(i).append(". ").append(names.get(i));
+            s.append(" made the move ").append(Arrays.toString(moves.get(i)));
+        }
+        return s.toString();
     }
 }

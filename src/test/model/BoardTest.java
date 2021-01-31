@@ -19,7 +19,7 @@ class BoardTest {
 
     @Test
     void testToString() {
-        assertEquals(" A B C D E F G H I\n" +
+        assertEquals(" A B C D E F G H\n" +
                 "----------------\n" +
                 "| | | | | | | | |0\n" +
                 "----------------\n" +
