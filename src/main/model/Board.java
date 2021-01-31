@@ -1,5 +1,7 @@
 package model;
 
+import ui.Utils;
+
 import java.util.*;
 
 /*
@@ -21,6 +23,10 @@ public class Board {
         this.currentPlayer = this.player1;
 
         this.board = new int[8][8];
+        this.board[3][3] = player1.getPiece();
+        this.board[4][4] = player1.getPiece();
+        this.board[3][4] = player2.getPiece();
+        this.board[4][3] = player2.getPiece();
     }
 
     /*
@@ -53,5 +59,24 @@ public class Board {
      */
     public boolean isPossibleMove(int x, int y) {
         return false;
+    }
+
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        s.append(Utils.repeatString("-", 16));
+        for (int[] x : this.board) {
+            s.append("\n");
+            for (int y : x) {
+                if (y == player1.getPiece()) {
+                    s.append("|X");
+                } else if (y == player2.getPiece()) {
+                    s.append("|O");
+                } else {
+                    s.append("| ");
+                }
+            }
+            s.append("|\n").append(Utils.repeatString("-", 16));
+        }
+        return s.toString();
     }
 }

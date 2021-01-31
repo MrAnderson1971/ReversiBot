@@ -5,7 +5,6 @@ Represents one player for Othello game.
  */
 public class Player {
 
-    private int number;
     private Tree agent;
     private String name;
 
@@ -16,8 +15,8 @@ public class Player {
     /*
     EFFECTS: instantiates a Player
      */
-    public Player(int number, Tree agent, String name) {
-        this.number = number;
+    public Player(int piece, Tree agent, String name) {
+        this.piece = piece;
         this.agent = agent;
         this.name = name;
     }
@@ -35,6 +34,6 @@ public class Player {
             return false;
         }
         Player p = (Player) other;
-        return this.number == p.number;
+        return this.piece == p.piece;
     }
 }

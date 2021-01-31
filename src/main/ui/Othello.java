@@ -45,6 +45,7 @@ public class Othello {
             game = new Game(new Player(1, null, name),
                     new Player(-1, null, "Player 2"));
         }
+        System.out.println(game.getBoard());
     }
 
     private int getNumPlayers(Scanner scan) {
