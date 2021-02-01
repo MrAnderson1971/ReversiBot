@@ -1,9 +1,6 @@
 package ui;
 
-import model.Game;
-import model.Player;
-import model.Tree;
-import model.Utils;
+import model.*;
 
 import java.util.*;
 
@@ -14,9 +11,36 @@ public class Othello {
 
     Game game;
 
+    private  GameHistory gameHistory;
+
     // EFFECTS: runs the game
     public Othello() {
-        start();
+        gameHistory = new GameHistory();
+        while (true) {
+            menu();
+            start();
+        }
+    }
+
+    private void menu() {
+        String selection = "";
+        Scanner scan = new Scanner(System.in);
+        do {
+            System.out.println("Press p to play, or v to view past games.");
+            selection = scan.nextLine().toLowerCase();
+        } while (!selection.equals("p") && !selection.equals("v"));
+        if (selection.equals("p")) {
+            return;
+        }
+        viewRecord();
+    }
+
+    private void viewRecord() {
+        if (gameHistory.isEmpty()) {
+            System.out.println("No games played yet.");
+            menu();
+        }
+        System.out.println(gameHistory);
     }
 
     private void start() {
