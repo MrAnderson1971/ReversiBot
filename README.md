@@ -1,11 +1,26 @@
-# My Personal Project
+# Othello
 
-## A subtitle
+## Board game + bot (hopefully)
 
-A *bulleted* list:
-- item 1
-- item 2
-- item 3
+- What will the application do?  
 
-An example of text with **bold** and *italic* fonts.  Note that the IntelliJ markdown previewer doesn't seem to render 
-the bold and italic fonts correctly but they will appear correctly on GitHub.
+The application will provide a computer version of the strategy board game *Othello*, also known as *Reversi*. 
+The board consists of 8x8 squares, along with 64 pieces, each black on one side and white on the other.
+
+- Who will use it?
+
+Anyone who's bored.
+
+- Why is this project of interest to you?
+
+Board games are fun and interesting to program. Othello in particular, is neither too simply nor to complex to design. 
+Also due to the fact that it's a strategy game that is not too complex, it should not be too hard to write an AI using a
+tree search algorithm that can play the game proficiently.
+
+### User stories
+
+- As a user, I want to be able to play a 2 player Othello game against another human player.
+- As a user, I also want to be able to play an Othello game against a computer opponent.
+- As a user, I want to be able to adjust the difficulty of computer opponents.
+- As a user, I want to be able to view a "log" of all moves made by both players when a game ends.
+- As a user, I want said "log" to be added to a "record" so that I can view replays of previous games.
