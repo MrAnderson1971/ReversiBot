@@ -34,6 +34,16 @@ public class Player {
     }
 
     /*
+    REQUIRES: agent is not null
+    MODIFIES: this, agent
+    EFFECTS: trains the AI
+     */
+    public void setAgent(Tree agent) {
+        this.agent = agent;
+        this.agent.train();
+    }
+
+    /*
     EFFECTS: true if other is equal to this.
      */
     @Override

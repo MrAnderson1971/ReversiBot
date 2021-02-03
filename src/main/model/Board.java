@@ -5,7 +5,7 @@ import java.util.*;
 /*
 Represents the board for Othello game
  */
-public class Board {
+public class Board implements Cloneable {
 
     private int[][] board;
 
@@ -42,7 +42,7 @@ public class Board {
     /*
     REQUIRES: move be valid move
     MODIFIERS: this
-    EFFECTS: places piece corresponding to currentPlayer at spot
+    EFFECTS: places piece corresponding to currentPlayer at spot, then swaps players
      */
     public void makeMove(int x, int y) {
         board[x][y] = currentPlayer.getPiece();
@@ -182,5 +182,16 @@ public class Board {
             s.append("|").append(i++).append("\n").append(Utils.repeatString("-", 16));
         }
         return s.toString();
+    }
+
+    @Override
+    public Board clone() {
+        int[][] newArray = new int[8][8];
+        for (int x = 0; x < 8; x++) {
+            System.arraycopy(board[x], 0, newArray[x], 0, 8);
+        }
+        Board newBoard = new Board(player1, player2);
+        newBoard.board = newArray;
+        return newBoard;
     }
 }

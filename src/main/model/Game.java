@@ -31,6 +31,10 @@ public class Game {
         this.moveHistory = new MoveHistory();
     }
 
+    public MoveHistory getMoveHistory() {
+        return moveHistory;
+    }
+
     /*
     MODIFIES: this
     EFFECTS: runs the game
@@ -41,7 +45,6 @@ public class Game {
 
             moveHistory.add(move, board.getCurrentPlayer().getName());
             board.makeMove(move[0], move[1]);
-            System.out.println(Arrays.toString(move));
 
             if (board.isGameOver()) {
                 over = true;

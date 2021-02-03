@@ -45,6 +45,13 @@ public class GameHistory {
     }
 
     /*
+    EFFECTS: returns a list of all keys in displayMenu
+     */
+    public Set<Integer> getKeyset() {
+        return displayMenu.keySet();
+    }
+
+    /*
     EFFECTS: returns string representation of this to display as menu
      */
     @Override
