@@ -11,7 +11,8 @@ public class Othello {
 
     Game game;
 
-    private  GameHistory gameHistory;
+    private GameHistory gameHistory;
+    private Scanner scan = new Scanner(System.in);
 
     // EFFECTS: runs the game
     public Othello() {
@@ -24,7 +25,7 @@ public class Othello {
 
     private void menu() {
         String selection = "";
-        Scanner scan = new Scanner(System.in);
+
         do {
             System.out.println("Press p to play, or v to view past games.");
             selection = scan.nextLine().toLowerCase();
@@ -38,39 +39,64 @@ public class Othello {
     private void viewRecord() {
         if (gameHistory.isEmpty()) {
             System.out.println("No games played yet.");
-            menu();
+            return;
         }
-        System.out.println(gameHistory);
+
+        while (true) {
+            System.out.println(gameHistory);
+            int selection = -1;
+            do {
+                System.out.println("Select a game to view replay, or B to go back:");
+                String input = scan.nextLine().toUpperCase();
+                if (input.equals("B")) {
+                    return;
+                }
+                try {
+                    selection = Integer.parseInt(input);
+                } catch (NumberFormatException e) {
+                    continue;
+                }
+            } while (!gameHistory.getKeyset().contains(selection));
+
+            System.out.println(gameHistory.get(selection));
+        }
     }
 
     private void start() {
-        Scanner scan = new Scanner(System.in);
-
-        System.out.println("Hello human. Please enter your name:");
-        String name = scan.nextLine();
+        System.out.println("Hello Player 1. Please enter your name:");
+        String player1name = scan.nextLine();
+        System.out.println("Hello Player 2. Please enter your name:");
+        String player2name = scan.nextLine();
 
         int numPlayers = getNumPlayers(scan);
 
         if (numPlayers == 1) {
 
-            int difficulty = -1;
-            do {
-                System.out.println("Select difficulty: (1 - 10)");
-                try {
-                    difficulty = Integer.parseInt(scan.nextLine());
-                } catch (NumberFormatException e) {
-                    continue;
-                }
-            } while (!(0 < difficulty && difficulty <= 10));
+            int difficulty = getDifficulty();
 
-            game = new Game(new Player(1, null, name),
-                    new Player(-1, new Tree(difficulty), "Computer"));
+            Player player1 = new Player(1, null, player1name);
+            Player player2 = new Player(-1, null, player2name);
+            game = new Game(player1, player2);
+            player2.setAgent(new Tree(difficulty, game.getBoard(), player1, player2));
 
         } else {
-            game = new Game(new Player(1, null, name),
-                    new Player(-1, null, "Player 2"));
+            game = new Game(new Player(1, null, player1name),
+                    new Player(-1, null, player2name));
         }
         runGame(game);
+    }
+
+    private int getDifficulty() {
+        int difficulty = -1;
+        do {
+            System.out.println("Select difficulty: (1 - 10)");
+            try {
+                difficulty = Integer.parseInt(scan.nextLine());
+            } catch (NumberFormatException e) {
+                continue;
+            }
+        } while (!(0 < difficulty && difficulty <= 10));
+        return difficulty;
     }
 
     private void runGame(Game game) {
@@ -80,6 +106,12 @@ public class Othello {
             game.update();
         }
         System.out.println(game.getBoard().getWinner().getName() + " won!");
+        System.out.println(game.getBoard());
+        System.out.println("Enter a name for this game:");
+
+        String gameName = scan.nextLine();
+
+        gameHistory.add(gameName, game.getMoveHistory());
     }
 
     /*
