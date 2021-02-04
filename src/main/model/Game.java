@@ -40,15 +40,33 @@ public class Game {
     EFFECTS: runs the game
      */
     public void update() {
-        if (board.getCurrentPlayer().getAgent() == null) {
-            int[] move = Othello.getMove(board.getPossibleMoves());
+        try {
+            if (board.getCurrentPlayer().getAgent() == null) { // get player move
+                int[] move = Othello.getMove(board.getPossibleMoves());
 
-            moveHistory.add(move, board.getCurrentPlayer().getName());
-            board.makeMove(move[0], move[1]);
+                moveHistory.add(move, board.getCurrentPlayer().toString());
+                board.makeMove(move[0], move[1]);
 
-            if (board.isGameOver()) {
-                over = true;
+                if (board.getCurrentPlayer().getAgent() != null) {
+                    //board.getCurrentPlayer().getAgent().train();
+                    board.getCurrentPlayer().getAgent().updateMove(move);
+                    board.getCurrentPlayer().getAgent().train();
+                }
+
+            } else { // get computer move
+                //board.getCurrentPlayer().getAgent().train();
+                int[] move = board.getCurrentPlayer().getAgent().bestMove();
+                board.getCurrentPlayer().getAgent().train();
+                moveHistory.add(move, board.getCurrentPlayer().toString());
+                board.makeMove(move[0], move[1]);
             }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(moveHistory);
+            e.printStackTrace();
+            throw e;
+        }
+        if (board.isGameOver()) {
+            over = true;
         }
     }
 

@@ -43,8 +43,24 @@ public class Node {
         return this.wins;
     }
 
+    public int[] getMove() {
+        return this.move;
+    }
+
+    public ArrayList<Node> getChildren() {
+        return this.children;
+    }
+
     public void setWins(double wins) {
         this.wins = wins;
+    }
+
+    /*
+    MODIFIES: this
+    EFFECTS: increase the number of games explored by 1
+     */
+    public void addGame() {
+        games++;
     }
 
     /*
@@ -93,5 +109,21 @@ public class Node {
      */
     public Node randomChild() {
         return children.get(new Random().nextInt(children.size()));
+    }
+
+    /*
+    EFFECTS: returns node that has the highest win rate.
+     */
+    public Node bestMove() {
+        Node bestChild = children.get(0);
+        double bestWinRate = bestChild.wins / bestChild.games;
+        for (Node child : children) {
+            if (child.wins / child.games > bestWinRate) {
+                bestWinRate = child.wins / child.games;
+                bestChild = child;
+            }
+        }
+
+        return bestChild;
     }
 }

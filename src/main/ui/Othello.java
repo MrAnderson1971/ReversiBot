@@ -102,10 +102,11 @@ public class Othello {
     private void runGame(Game game) {
         while (!game.isOver()) {
             System.out.println(game.getBoard());
-            System.out.println(game.getBoard().getCurrentPlayer().getName() + "'s turn.");
+            System.out.println(game.getBoard().getCurrentPlayer() + "'s turn.");
             game.update();
+            System.out.println(game.getMoveHistory().getLastMove());
         }
-        System.out.println(game.getBoard().getWinner().getName() + " won!");
+        System.out.println(game.getBoard().getWinner() + " won!");
         System.out.println(game.getBoard());
         System.out.println("Enter a name for this game:");
 

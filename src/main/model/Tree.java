@@ -13,11 +13,14 @@ public class Tree {
 
     private Node leaf;
 
+    private Node currentMove;
+
     public Tree(int depth, Board board, Player player, Player opponent) {
         this.depth = depth;
         this.player = player;
         this.opponent = opponent;
         this.root = new Node(board, null, player);
+        this.currentMove = this.root;
     }
 
     /*
@@ -25,7 +28,7 @@ public class Tree {
     EFFECTS: trains the AI
      */
     public void train() {
-        for (int i = 0; i < depth; i++) {
+        for (int i = 0; i < Math.pow(2, depth); i++) {
             selection();
             Player winner = expansion();
             if (winner == null) {
@@ -40,7 +43,7 @@ public class Tree {
     EFFECTS: returns best leaf node found in tree
      */
     public void selection() {
-        Node current = root;
+        Node current = currentMove;
         while (!current.isLeaf()) {
             current = current.bestNode();
         }
@@ -55,21 +58,17 @@ public class Tree {
     public Player expansion() {
         Board b = leaf.getBoard();
         ArrayList<Node> children = new ArrayList<>();
-        Node winnerNode = null;
-        for (int[] move : b.getPossibleMoves()) {
+        ArrayList<int[]> possibleMoves = b.getPossibleMoves();
+        for (int[] move : possibleMoves) {
             Board copyOfBoard = b.clone();
             copyOfBoard.makeMove(move[0], move[1]);
             Node newNode = new Node(copyOfBoard, move, copyOfBoard.getCurrentPlayer());
-            if (copyOfBoard.getWinner() != null) {
-                winnerNode = newNode;
-            }
             children.add(newNode);
         }
-        leaf.addChildren(children);
-        if (winnerNode != null) {
-            leaf = winnerNode;
+        if (children.size() == 0) { // no possible moves found; game over
             return leaf.getBoard().getWinner();
         }
+        leaf.addChildren(children);
         leaf = leaf.randomChild();
         return null;
     }
@@ -94,12 +93,41 @@ public class Tree {
     public void backpropagation(Player winner) {
         Node current = leaf;
         while (current.getParent() != null) {
+            current.addGame();
             if (winner == current.getPlayer()) {
+                // this node won
                 current.setWins(current.getWins() + 1);
             } else if (winner != null) {
+                // this node lost
                 current.setWins(current.getWins() - 1);
             }
             current = current.getParent();
         }
+    }
+
+    /*
+    MODIFIES: this
+    EFFECTS: returns the most promising move, then updates the tree
+     */
+    public int[] bestMove() {
+        Node bestNode = currentMove.bestMove();
+        int[] bestMove = bestNode.getMove();
+        currentMove = bestNode;
+        return bestMove;
+    }
+
+    /*
+    REQUIRES: move is a valid move
+    MODIFIES: this
+    EFFECTS: updates tree so that current move is the move that was just made
+     */
+    public void updateMove(int[] move) {
+        for (Node child : currentMove.getChildren()) {
+            if (Arrays.equals(child.getMove(), move)) {
+                currentMove = child;
+                return;
+            }
+        }
+        throw new IllegalArgumentException("nope");
     }
 }
