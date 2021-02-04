@@ -192,6 +192,7 @@ public class Board implements Cloneable {
         }
         Board newBoard = new Board(player1, player2);
         newBoard.board = newArray;
+        newBoard.currentPlayer = currentPlayer;
         return newBoard;
     }
 }

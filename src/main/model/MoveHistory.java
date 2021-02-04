@@ -13,6 +13,10 @@ public class MoveHistory {
         this.names = new ArrayList<>();
     }
 
+    public String getLastMove() {
+        return names.get(names.size() - 1) + " made the move " + moveToString(moves.get(moves.size() - 1));
+    }
+
     /*
     REQUIRES: be a valid move
     MODIFIES: this
