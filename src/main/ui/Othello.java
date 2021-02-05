@@ -112,7 +112,7 @@ public class Othello {
 
         String gameName = scan.nextLine();
 
-        gameHistory.add(gameName, game.getMoveHistory());
+        gameHistory.add(gameName, game.getMoveHistory(), game.getBoard().getWinner());
     }
 
     /*

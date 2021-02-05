@@ -21,10 +21,10 @@ public class Board implements Cloneable {
         this.currentPlayer = this.player1;
 
         this.board = new int[8][8];
-        this.board[3][3] = player1.getPiece();
-        this.board[4][4] = player1.getPiece();
-        this.board[3][4] = player2.getPiece();
-        this.board[4][3] = player2.getPiece();
+        this.board[3][3] = player2.getPiece();
+        this.board[4][4] = player2.getPiece();
+        this.board[3][4] = player1.getPiece();
+        this.board[4][3] = player1.getPiece();
     }
 
     public Player getCurrentPlayer() {
