@@ -6,7 +6,7 @@ public class GameHistory {
 
     // Maps a number to game name for display in menus
     // TreeMap because I need them to print in order
-    private TreeMap<Integer, String> displayMenu;
+    private TreeMap<Integer, ArrayList<String>> displayMenu;
 
     // Maps same number to moveHistory for fetching
     private HashMap<Integer, MoveHistory> allGames;
@@ -23,8 +23,8 @@ public class GameHistory {
     MODIFIES: this
     EFFECTS: adds a game to the record, increments id for next game
      */
-    public void add(String name, MoveHistory game) {
-        displayMenu.put(currentNumber, name);
+    public void add(String name, MoveHistory game, Player winner) {
+        displayMenu.put(currentNumber, new ArrayList<>(Arrays.asList(name, winner.toString())));
         allGames.put(currentNumber, game);
         currentNumber++;
     }
@@ -58,7 +58,8 @@ public class GameHistory {
     public String toString() {
         StringBuilder s = new StringBuilder();
         for (int i : displayMenu.keySet()) {
-            s.append(i).append(". ").append(displayMenu.get(i)).append("\n");
+            s.append(i).append(". ").append(displayMenu.get(i).get(0));
+            s.append(" | ").append(displayMenu.get(i).get(1)).append(" won").append("\n");
         }
         return s.toString();
     }

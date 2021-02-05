@@ -118,7 +118,8 @@ public class Node {
         Node bestChild = children.get(0);
         double bestWinRate = bestChild.wins / bestChild.games;
         for (Node child : children) {
-            if (child.wins / child.games > bestWinRate) {
+            if (child.wins / child.games < bestWinRate) {
+                // Maximize chances of this winning by maximizing chances of opponent losing
                 bestWinRate = child.wins / child.games;
                 bestChild = child;
             }

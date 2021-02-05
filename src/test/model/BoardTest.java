@@ -10,11 +10,39 @@ import static org.junit.jupiter.api.Assertions.*;
 class BoardTest {
 
     Board defaultBoard;
+    Board winBoard;
 
     @BeforeEach
     void runBefore() {
         defaultBoard = new Board(new Player(1, null, "1"),
                 new Player(-1, null, "-1"));
+
+        winBoard = new Board(new Player(1, null, "Gregory"),
+                new Player(-1, null, "Manny"));
+        /*1. Gregory made the move C3
+2. Manny made the move C2
+3. Gregory made the move C1
+4. Manny made the move B3
+5. Gregory made the move A3
+6. Manny made the move C4
+7. Gregory made the move C5
+8. Manny made the move B1
+9. Gregory made the move E5
+10. Manny made the move A4
+11. Gregory made the move A0
+12. Manny made the move A2*/
+        winBoard.makeMove(2, 3);
+        winBoard.makeMove(2, 2);
+        winBoard.makeMove(2, 1);
+        winBoard.makeMove(1, 3);
+        winBoard.makeMove(0, 3);
+        winBoard.makeMove(2, 4);
+        winBoard.makeMove(2, 5);
+        winBoard.makeMove(1, 1);
+        winBoard.makeMove(4, 5);
+        winBoard.makeMove(0, 4);
+        winBoard.makeMove(0, 0);
+        winBoard.makeMove(0, 2);
     }
 
     @Test
@@ -25,13 +53,13 @@ class BoardTest {
                 "----------------\n" +
                 "| | | | | | | | |1\n" +
                 "----------------\n" +
-                "| | | | |.| | | |2\n" +
+                "| | | |.| | | | |2\n" +
                 "----------------\n" +
-                "| | | |X|O|.| | |3\n" +
+                "| | |.|O|X| | | |3\n" +
                 "----------------\n" +
-                "| | |.|O|X| | | |4\n" +
+                "| | | |X|O|.| | |4\n" +
                 "----------------\n" +
-                "| | | |.| | | | |5\n" +
+                "| | | | |.| | | |5\n" +
                 "----------------\n" +
                 "| | | | | | | | |6\n" +
                 "----------------\n" +
@@ -41,21 +69,28 @@ class BoardTest {
 
     @Test
     void testGetCapturable() {
-        ArrayList<int[]> twoFour = defaultBoard.getCapturable(2, 4);
+        ArrayList<int[]> twoFour = defaultBoard.getCapturable(3, 2);
         assertEquals(1, twoFour.size());
-        assertTrue(twoFour.get(0)[0] == 3 && twoFour.get(0)[1] == 4);
+        assertTrue(twoFour.get(0)[0] == 3 && twoFour.get(0)[1] == 3);
     }
 
     @Test
     void testGetPossibleMoves() {
         assertEquals(4, defaultBoard.getPossibleMoves().size());
+        assertEquals(0, winBoard.getPossibleMoves().size());
     }
 
     @Test
     void testIsPossibleMove() {
         assertFalse(defaultBoard.isPossibleMove(3, 3));
         assertFalse(defaultBoard.isPossibleMove(0, 0));
-        assertTrue(defaultBoard.isPossibleMove(3, 5));
+        assertTrue(defaultBoard.isPossibleMove(3, 2));
+    }
+
+    @Test
+    void testGetWinner() {
+        assertNull(defaultBoard.getWinner());
+        assertEquals("Gregory", winBoard.getWinner().toString());
     }
 
 }
