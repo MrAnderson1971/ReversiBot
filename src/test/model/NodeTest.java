@@ -12,6 +12,7 @@ public class NodeTest {
     Node rootNode;
     Node childNode;
     Node parentNode;
+    Node parentNode2;
 
     @BeforeEach
     void runBefore() {
@@ -19,6 +20,23 @@ public class NodeTest {
         childNode = new Node(null, null, null);
         parentNode = new Node(null, null, null);
         rootNode.addChildren(new ArrayList<>(Collections.singletonList(childNode)));
+        parentNode = new Node(null, null, null);
+
+        ArrayList<Node> children = new ArrayList<>();
+        Node child = new Node(null, null, null);
+        child.addGame();
+        child.setWins(1);
+        children.add(child);
+        child = new Node(null, null, null);
+        child.addGame();
+        child.addGame();
+        child.addGame();
+        child.setWins(-1);
+        children.add(child);
+        child = new Node(null, null, null);
+        children.add(child);
+        parentNode2 = new Node(null, null, null);
+        parentNode2.addChildren(children);
     }
 
     @Test
@@ -40,6 +58,36 @@ public class NodeTest {
         childNode.setWins(42.0);
         assertEquals(42 + Math.sqrt((2 * Math.log(1)) / 1),
                 childNode.uct());
+    }
+
+    @Test
+    void testAddGame() {
+        assertEquals(1.0, rootNode.getGames());
+        rootNode.addGame();
+        assertEquals(2.0, rootNode.getGames());
+    }
+
+    @Test
+    void testBestNode() {
+        assertEquals(childNode, rootNode.bestNode());
+        assertEquals(parentNode2.getChildren().get(0), parentNode2.bestNode());
+    }
+
+    @Test
+    void testIsLeaf() {
+        assertTrue(childNode.isLeaf());
+        assertFalse(rootNode.isLeaf());
+    }
+
+    @Test
+    void testRandomChild() {
+        assertTrue(parentNode2.getChildren().contains(parentNode2.randomChild()));
+    }
+
+    @Test
+    void testBestMove() {
+        assertEquals(childNode, rootNode.bestMove());
+        assertEquals(parentNode2.getChildren().get(1), parentNode2.bestMove());
     }
 
 }
