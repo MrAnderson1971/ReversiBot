@@ -10,15 +10,22 @@ import static org.junit.jupiter.api.Assertions.*;
 class BoardTest {
 
     Board defaultBoard;
-    Board winBoard;
+    Board player1WinBoard;
+    Board player2WinBoard;
+
+    Board player1WinBoardClone;
 
     @BeforeEach
     void runBefore() {
         defaultBoard = new Board(new Player(1, null, "1"),
                 new Player(-1, null, "-1"));
 
-        winBoard = new Board(new Player(1, null, "Gregory"),
+        player1WinBoard = new Board(new Player(1, null, "Gregory"),
                 new Player(-1, null, "Manny"));
+
+        player2WinBoard = new Board(new Player(1, null, "Loser"),
+                new Player(-1, null, "Winner"));
+
         /*1. Gregory made the move C3
 2. Manny made the move C2
 3. Gregory made the move C1
@@ -31,18 +38,25 @@ class BoardTest {
 10. Manny made the move A4
 11. Gregory made the move A0
 12. Manny made the move A2*/
-        winBoard.makeMove(2, 3);
-        winBoard.makeMove(2, 2);
-        winBoard.makeMove(2, 1);
-        winBoard.makeMove(1, 3);
-        winBoard.makeMove(0, 3);
-        winBoard.makeMove(2, 4);
-        winBoard.makeMove(2, 5);
-        winBoard.makeMove(1, 1);
-        winBoard.makeMove(4, 5);
-        winBoard.makeMove(0, 4);
-        winBoard.makeMove(0, 0);
-        winBoard.makeMove(0, 2);
+        player1WinBoard.makeMove(2, 3);
+        player1WinBoard.makeMove(2, 2);
+        player1WinBoard.makeMove(2, 1);
+        player1WinBoard.makeMove(1, 3);
+        player1WinBoard.makeMove(0, 3);
+        player1WinBoard.makeMove(2, 4);
+        player1WinBoard.makeMove(2, 5);
+        player1WinBoard.makeMove(1, 1);
+        player1WinBoard.makeMove(4, 5);
+        player1WinBoard.makeMove(0, 4);
+        player1WinBoard.makeMove(0, 0);
+        player1WinBoard.makeMove(0, 2);
+
+        player2WinBoard.makeMove(3, 2);
+        player2WinBoard.makeMove(2, 4);
+        player2WinBoard.makeMove(5, 5);
+        player2WinBoard.makeMove(3, 1);
+
+        player1WinBoardClone = player1WinBoard.clone();
     }
 
     @Test
@@ -77,7 +91,8 @@ class BoardTest {
     @Test
     void testGetPossibleMoves() {
         assertEquals(4, defaultBoard.getPossibleMoves().size());
-        assertEquals(0, winBoard.getPossibleMoves().size());
+        assertEquals(0, player1WinBoard.getPossibleMoves().size());
+        assertEquals(0, player1WinBoardClone.getPossibleMoves().size());
     }
 
     @Test
@@ -90,7 +105,31 @@ class BoardTest {
     @Test
     void testGetWinner() {
         assertNull(defaultBoard.getWinner());
-        assertEquals("Gregory", winBoard.getWinner().toString());
+        assertEquals("Gregory", player1WinBoard.getWinner().toString());
+
+        // Game technically not over here, but one player has a higher score right now.
+        assertEquals("Winner", player2WinBoard.getWinner().toString());
+    }
+
+    @Test
+    void testSwitchPlayers() {
+        defaultBoard.switchPlayers();
+        assertEquals("-1", defaultBoard.getCurrentPlayer().toString());
+
+        assertEquals("Gregory", player1WinBoard.getCurrentPlayer().toString());
+        player1WinBoard.switchPlayers();
+        assertEquals("Manny", player1WinBoard.getCurrentPlayer().toString());
+
+        assertEquals("Gregory", player1WinBoardClone.getCurrentPlayer().toString());
+        player1WinBoardClone.switchPlayers();
+        assertEquals("Manny", player1WinBoardClone.getCurrentPlayer().toString());
+    }
+
+    @Test
+    void testGameOver() {
+        assertFalse(defaultBoard.isGameOver());
+        assertTrue(player1WinBoard.isGameOver());
+        assertFalse(player2WinBoard.isGameOver());
     }
 
 }
