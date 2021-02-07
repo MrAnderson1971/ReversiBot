@@ -47,6 +47,7 @@ public class Player {
     /*
     EFFECTS: true if other is equal to this.
      */
+
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof Player)) {
