@@ -2,6 +2,9 @@ package model;
 
 import java.util.*;
 
+/*
+One node on the MCTS search tree
+ */
 public class Node {
 
     private Board board;

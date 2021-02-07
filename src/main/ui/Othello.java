@@ -23,6 +23,7 @@ public class Othello {
         }
     }
 
+    // EFFECTS: Displays main menu
     private void menu() {
         String selection = "";
 
@@ -36,6 +37,9 @@ public class Othello {
         viewRecord();
     }
 
+    /*
+    EFFECTS: Displays record of past games
+     */
     private void viewRecord() {
         if (gameHistory.isEmpty()) {
             System.out.println("No games played yet.");
@@ -47,6 +51,7 @@ public class Othello {
             int selection = -1;
             do {
                 System.out.println("Select a game to view replay, or B to go back:");
+                System.out.println("Type \"D\" + game to delete it from the record (eg: D1)");
                 String input = scan.nextLine().toUpperCase();
                 if (input.equals("B")) {
                     return;
@@ -54,14 +59,40 @@ public class Othello {
                 try {
                     selection = Integer.parseInt(input);
                 } catch (NumberFormatException e) {
-                    continue;
+                    System.out.println("Please enter a valid number.");
                 }
             } while (!gameHistory.getKeyset().contains(selection));
 
-            System.out.println(gameHistory.get(selection));
+            viewReplay(selection);
         }
     }
 
+    /*
+    EFFECTS: allows user to view a replay of a game
+     */
+    public void viewReplay(int selection) {
+        MoveHistory mh = gameHistory.get(selection);
+        System.out.println(mh);
+        System.out.println("At any time, press B to go back, D to delete from record, or enter to continue");
+        Board board = new Board(mh.getPlayer1(), mh.getPlayer2());
+        ArrayList<int[]> moves = mh.getMoves();
+        for (int[] move : moves) {
+            System.out.println(board);
+            board.makeMove(move[0], move[1]);
+            String input = scan.nextLine().toUpperCase();
+            switch (input) {
+                case "D":
+                    gameHistory.delete(selection);
+                    return;
+                case "B":
+                    return;
+            }
+        }
+    }
+
+    /*
+    EFFECTS: sets up 1 or 2 player game
+     */
     private void start() {
         System.out.println("Hello Player 1. Please enter your name:");
         String player1name = scan.nextLine();
@@ -77,7 +108,8 @@ public class Othello {
             Player player1 = new Player(1, null, player1name);
             Player player2 = new Player(-1, null, player2name);
             game = new Game(player1, player2);
-            player2.setAgent(new Tree(difficulty, game.getBoard(), player1, player2));
+            //player2.setAgent(new Tree(difficulty, game.getBoard(), player1, player2));
+            player1.setAgent(new Tree(difficulty, game.getBoard(), player2, player1));
 
         } else {
             game = new Game(new Player(1, null, player1name),
@@ -86,6 +118,9 @@ public class Othello {
         runGame(game);
     }
 
+    /*
+    EFFECTS: allows player to select difficulty of AI opponent
+     */
     private int getDifficulty() {
         int difficulty = -1;
         do {
@@ -93,12 +128,15 @@ public class Othello {
             try {
                 difficulty = Integer.parseInt(scan.nextLine());
             } catch (NumberFormatException e) {
-                continue;
+                System.out.println("Please enter a valid number.");
             }
         } while (!(0 < difficulty && difficulty <= 10));
         return difficulty;
     }
 
+    /*
+    EFFECTS: runs the game and collects user input
+     */
     private void runGame(Game game) {
         while (!game.isOver()) {
             System.out.println(game.getBoard());
@@ -126,7 +164,7 @@ public class Othello {
             try {
                 numPlayers = Integer.parseInt(scan.nextLine());
             } catch (NumberFormatException e) {
-                continue;
+                System.out.println("Please enter a valid number.");
             }
         } while (numPlayers != 1 && numPlayers != 2);
         return numPlayers;
@@ -161,7 +199,8 @@ public class Othello {
     }
 
     /*
-    EFFECTS: takes char A-H and converts it into number, -1 if not valid input
+    REQUIRES: char is a letter between A - B (either uppercase or lowercase is fine)
+    EFFECTS: takes char A-H and converts it into number
      */
     private static int letterToNumber(char c) {
         switch (c) {
