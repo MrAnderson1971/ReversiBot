@@ -2,6 +2,9 @@ package model;
 
 import java.util.*;
 
+/*
+Keeps tracks of all games played so far
+ */
 public class GameHistory {
 
     // Maps a number to game name for display in menus
@@ -49,6 +52,20 @@ public class GameHistory {
      */
     public Set<Integer> getKeyset() {
         return displayMenu.keySet();
+    }
+
+    /*
+    MODIFIES: this
+    EFFECTS: deletes selection from both the menu and the record.
+    Returns true if successful, else returns false.
+     */
+    public boolean delete(int selection) {
+        if (displayMenu.containsKey(selection)) {
+            displayMenu.remove(selection);
+            allGames.remove(selection);
+            return true;
+        }
+        return false;
     }
 
     /*

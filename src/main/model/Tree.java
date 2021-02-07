@@ -2,6 +2,9 @@ package model;
 
 import java.util.*;
 
+/*
+Represents the MCTS search tree for the AI
+ */
 public class Tree {
 
     private Player player;
@@ -15,6 +18,9 @@ public class Tree {
 
     private Node currentMove;
 
+    /*
+    EFFECTS: creates new MCTS search tree
+     */
     public Tree(int depth, Board board, Player player, Player opponent) {
         this.depth = depth;
         this.player = player;

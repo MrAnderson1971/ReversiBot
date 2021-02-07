@@ -28,7 +28,7 @@ public class Game {
 
         this.over = false;
         this.board = new Board(player1, player2);
-        this.moveHistory = new MoveHistory();
+        this.moveHistory = new MoveHistory(player1, player2);
     }
 
     public MoveHistory getMoveHistory() {
@@ -48,6 +48,7 @@ public class Game {
                 board.makeMove(move[0], move[1]);
 
                 if (board.getCurrentPlayer().getAgent() != null) {
+                    // If opponent is computer, update computer AI tree.
                     //board.getCurrentPlayer().getAgent().train();
                     board.getCurrentPlayer().getAgent().updateMove(move);
                     board.getCurrentPlayer().getAgent().train();

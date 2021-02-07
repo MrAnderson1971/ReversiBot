@@ -1,6 +1,6 @@
 # Othello
 
-## Board game + bot (hopefully)
+## Board game + bot 
 
 - What will the application do?  
 
@@ -9,7 +9,7 @@ The board consists of 8x8 squares, along with 64 pieces, each black on one side 
 
 - Who will use it?
 
-Anyone who's bored.
+Anyone who's bored, or wish to practice Othello against a variable-difficulty robot.
 
 - Why is this project of interest to you?
 
@@ -22,5 +22,5 @@ tree search algorithm that can play the game proficiently.
 - As a user, I want to be able to play a 2 player Othello game against another human player.
 - As a user, I also want to be able to play an Othello game against a computer opponent.
 - As a user, I want to be able to adjust the difficulty of computer opponents.
-- As a user, I want to be able to view a "log" of all moves made by both players when a game ends.
-- As a user, I want said "log" to be added to a "record" so that I can view replays of previous games.
+- As a user, I want to be able to view a record of all moves made by both players when a game ends.
+- As a user, I want to add "log" to "record" so that I can view replays of previous games.

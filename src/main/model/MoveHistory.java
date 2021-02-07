@@ -2,17 +2,45 @@ package model;
 
 import java.util.*;
 
+/*
+Keeps track of all moves made in a game so far.
+ */
 public class MoveHistory {
 
     private ArrayList<int[]> moves;
     private ArrayList<String> names;
 
+    private Player player1;
+    private Player player2;
+
     // EFFECTS: instantiate
-    public MoveHistory() {
+    public MoveHistory(Player player1, Player player2) {
         this.moves = new ArrayList<>();
         this.names = new ArrayList<>();
+
+        this.player1 = player1;
+        this.player2 = player2;
     }
 
+    public ArrayList<int[]> getMoves() {
+        return this.moves;
+    }
+
+    public ArrayList<String> getNames() {
+        return this.names;
+    }
+
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+
+    /*
+    EFFECTS: returns string representation of last move made.
+     */
     public String getLastMove() {
         return names.get(names.size() - 1) + " made the move " + moveToString(moves.get(moves.size() - 1));
     }
