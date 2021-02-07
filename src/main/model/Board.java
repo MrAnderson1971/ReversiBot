@@ -34,10 +34,10 @@ public class Board implements Cloneable {
     /*
     REQUIRES: x, y < 7
     EFFECTS: true if spot at coordinates is 0
-     */
+
     public boolean spotIsEmpty(int x, int y) {
         return board[x][y] == 0;
-    }
+    }/*
 
     /*
     REQUIRES: move be valid move

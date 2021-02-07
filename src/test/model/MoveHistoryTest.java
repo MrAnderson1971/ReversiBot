@@ -14,8 +14,10 @@ public class MoveHistoryTest {
 
     @BeforeEach
     void runBefore() {
-        defaultHistory = new MoveHistory();
-        mh2 = new MoveHistory();
+        defaultHistory = new MoveHistory(new Player(1, null, "Player 1"),
+                new Player(-1, null, "Player2"));
+        mh2 = new MoveHistory(new Player(1, null, "Player 1"),
+                new Player(-1, null, "Player2"));
 
         mh2.add(new int[] {1, 2}, "Player 1");
         mh2.add(new int[] {3, 4}, "Player 2");

@@ -51,7 +51,6 @@ public class Othello {
             int selection = -1;
             do {
                 System.out.println("Select a game to view replay, or B to go back:");
-                System.out.println("Type \"D\" + game to delete it from the record (eg: D1)");
                 String input = scan.nextLine().toUpperCase();
                 if (input.equals("B")) {
                     return;
@@ -76,9 +75,10 @@ public class Othello {
         System.out.println("At any time, press B to go back, D to delete from record, or enter to continue");
         Board board = new Board(mh.getPlayer1(), mh.getPlayer2());
         ArrayList<int[]> moves = mh.getMoves();
-        for (int[] move : moves) {
+        for (int i = 0; i < moves.size(); i++) {
             System.out.println(board);
-            board.makeMove(move[0], move[1]);
+            System.out.println(mh.getOneLine(i));
+            board.makeMove(moves.get(i)[0], moves.get(i)[1]);
             String input = scan.nextLine().toUpperCase();
             switch (input) {
                 case "D":

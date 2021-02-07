@@ -99,4 +99,15 @@ public class MoveHistory {
         }
         return s.toString();
     }
+
+    /*
+    REQUIRES: moveNumber is a >= 0 and less than the number of moves made in the game
+    EFFECTS: returns moveNumber-th move as a string
+     */
+    public String getOneLine(int moveNumber) {
+        StringBuilder s = new StringBuilder();
+        s.append(moveNumber + 1).append(". ").append(names.get(moveNumber));
+        s.append(" made the move ").append(moveToString(moves.get(moveNumber))).append(".");
+        return s.toString();
+    }
 }
