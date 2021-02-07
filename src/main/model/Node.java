@@ -58,6 +58,10 @@ public class Node {
         this.wins = wins;
     }
 
+    public double getGames() {
+        return this.games;
+    }
+
     /*
     MODIFIES: this
     EFFECTS: increase the number of games explored by 1
