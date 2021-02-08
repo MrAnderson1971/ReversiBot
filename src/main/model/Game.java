@@ -39,6 +39,7 @@ public class Game {
     MODIFIES: this
     EFFECTS: runs the game
      */
+    /*
     public void update() {
         try {
             if (board.getCurrentPlayer().getAgent() == null) { // get player move
@@ -69,7 +70,7 @@ public class Game {
         if (board.isGameOver()) {
             over = true;
         }
-    }
+    }*/
 
     public Board getBoard() {
         return board;
@@ -77,5 +78,9 @@ public class Game {
 
     public boolean isOver() {
         return over;
+    }
+
+    public void setOver(boolean over) {
+        this.over = over;
     }
 }

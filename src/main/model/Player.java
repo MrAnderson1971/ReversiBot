@@ -15,9 +15,9 @@ public class Player {
     /*
     EFFECTS: instantiates a Player
      */
-    public Player(int piece, Tree agent, String name) {
+    public Player(int piece, String name) {
         this.piece = piece;
-        this.agent = agent;
+        //this.agent = agent;
         this.name = name;
     }
 
