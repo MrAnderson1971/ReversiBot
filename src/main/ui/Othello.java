@@ -108,7 +108,7 @@ public class Othello {
             Player player1 = new Player(1, player1name);
             Player player2 = new Player(-1, player2name);
             game = new Game(player1, player2);
-            //player2.setAgent(new Tree(difficulty, game.getBoard(), player1, player2));
+            player2.setAgent(new Tree(1, game.getBoard(), player1, player2));
             player1.setAgent(new Tree(difficulty, game.getBoard(), player2, player1));
 
         } else {
@@ -231,34 +231,33 @@ public class Othello {
     EFFECTS: gets player / computer move, then executes move
      */
     public void update(Board board, MoveHistory moveHistory) {
+        if (board.isGameOver()) {
+            game.setOver(true);
+            return;
+        }
         try {
+            int[] move;
             if (board.getCurrentPlayer().getAgent() == null) { // get player move
-                int[] move = getMove(board.getPossibleMoves());
-
-                moveHistory.add(move, board.getCurrentPlayer().toString());
-                board.makeMove(move[0], move[1]);
-
-                if (board.getCurrentPlayer().getAgent() != null) {
-                    // If opponent is computer, update computer AI tree.
-                    //board.getCurrentPlayer().getAgent().train();
-                    board.getCurrentPlayer().getAgent().updateMove(move);
-                    board.getCurrentPlayer().getAgent().train();
-                }
+                move = getMove(board.getPossibleMoves());
 
             } else { // get computer move
                 //board.getCurrentPlayer().getAgent().train();
-                int[] move = board.getCurrentPlayer().getAgent().bestMove();
+                move = board.getCurrentPlayer().getAgent().bestMove();
                 board.getCurrentPlayer().getAgent().train();
-                moveHistory.add(move, board.getCurrentPlayer().toString());
-                board.makeMove(move[0], move[1]);
+            }
+            moveHistory.add(move, board.getCurrentPlayer().toString());
+            board.makeMove(move[0], move[1]);
+
+            if (board.getCurrentPlayer().getAgent() != null) {
+                // If opponent is computer, update computer AI tree.
+                //board.getCurrentPlayer().getAgent().train();
+                board.getCurrentPlayer().getAgent().updateMove(move);
+                board.getCurrentPlayer().getAgent().train();
             }
         } catch (IndexOutOfBoundsException e) {
             System.out.println(moveHistory);
             e.printStackTrace();
             throw e;
-        }
-        if (board.isGameOver()) {
-            game.setOver(true);
         }
     }
 
