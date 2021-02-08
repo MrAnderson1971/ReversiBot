@@ -193,7 +193,7 @@ public class Othello {
 
             x = letterToNumber(input.charAt(0));
             move = new int[]{x, y};
-        } while (!(Utils.listContainsArray(validMoves, move)));
+        } while (!(listContainsArray(validMoves, move)));
 
         return move;
     }
@@ -260,6 +260,18 @@ public class Othello {
         if (board.isGameOver()) {
             game.setOver(true);
         }
+    }
+
+    /*
+     EFFECTS: true if ArrayList of int arrays contains array
+      */
+    public static boolean listContainsArray(ArrayList<int[]> list, int[] array) {
+        for (int[] i : list) {
+            if (Arrays.equals(i, array)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

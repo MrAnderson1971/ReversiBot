@@ -132,4 +132,30 @@ class BoardTest {
         assertFalse(player2WinBoard.isGameOver());
     }
 
+    @Test
+    void testRepeatString() {
+        assertEquals("hihihi", Board.repeatString("hi", 3));
+        assertEquals("-", Board.repeatString("-", 1));
+    }
+
+    @Test
+    void testCountObjects() {
+        int[][] array = new int[8][8];
+
+        for (int i = 0; i < 8; i++) {
+            array[0][i] = 1;
+        }
+
+        for (int i = 0; i < 8; i++) {
+            array[i][0] = 2;
+        }
+
+        array[5][5] = 999;
+
+        assertEquals(7, Board.countObjects(array, 1));
+        assertEquals(8, Board.countObjects(array,2));
+        assertEquals(1, Board.countObjects(array, 999));
+        assertEquals(48, Board.countObjects(array, 0));
+    }
+
 }

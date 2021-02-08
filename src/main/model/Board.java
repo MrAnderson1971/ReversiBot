@@ -2,6 +2,8 @@ package model;
 
 import java.util.*;
 
+import static ui.Othello.listContainsArray;
+
 /*
 Represents the board for Othello game
  */
@@ -71,8 +73,8 @@ public class Board implements Cloneable {
     EFFECTS: returns Player that won, null if tie.
      */
     public Player getWinner() {
-        int player1count = Utils.countObjects(board, player1.getPiece());
-        int player2count = Utils.countObjects(board, player2.getPiece());
+        int player1count = countObjects(board, player1.getPiece());
+        int player2count = countObjects(board, player2.getPiece());
 
         // player with most pieces at the end of the game wins
         if (player2count > player1count) {
@@ -164,12 +166,12 @@ public class Board implements Cloneable {
 
         StringBuilder s = new StringBuilder();
         s.append(" A B C D E F G H\n");
-        s.append(Utils.repeatString("-", 16));
+        s.append(repeatString("-", 16));
         int i = 0;
         for (int y = 0; y < 8; y++) {
             s.append("\n");
             for (int x = 0; x < 8; x++) {
-                if (Utils.listContainsArray(possibleMoves, new int[] {x, y})) {
+                if (listContainsArray(possibleMoves, new int[]{x, y})) {
                     s.append("|.");
                 } else if (board[x][y] == player1.getPiece()) {
                     s.append("|X");
@@ -179,7 +181,7 @@ public class Board implements Cloneable {
                     s.append("| ");
                 }
             }
-            s.append("|").append(i++).append("\n").append(Utils.repeatString("-", 16));
+            s.append("|").append(i++).append("\n").append(repeatString("-", 16));
         }
         return s.toString();
     }
@@ -194,5 +196,31 @@ public class Board implements Cloneable {
         newBoard.board = newArray;
         newBoard.currentPlayer = currentPlayer;
         return newBoard;
+    }
+
+    /*
+    REQUIRES: times be positive
+    EFFECTS: repeats str n times
+     */
+    public static String repeatString(String str, int times) {
+        if (times == 1) {
+            return str;
+        }
+        return str + repeatString(str, times - 1);
+    }
+
+    /*
+        EFFECTS: counts the number of times i shows up in 2d array.
+    */
+    public static int countObjects(int[][] array, int i) {
+        int count = 0;
+        for (int[] x : array) {
+            for (int y : x) {
+                if (y == i) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 }
