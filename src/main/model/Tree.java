@@ -29,12 +29,21 @@ public class Tree {
         this.currentMove = this.root;
     }
 
+    public Node getRoot() {
+        return root;
+    }
+
+    public Node getCurrentMove() {
+        return currentMove;
+    }
+
     /*
     MODIFIES: this
     EFFECTS: trains the AI
-     */
+    */
     public void train() {
-        for (int i = 0; i < Math.pow(2, depth); i++) {
+        double searchTimes = Math.pow(2, depth);
+        for (int i = 0; i < searchTimes; i++) {
             selection();
             Player winner = expansion();
             if (winner == null) {

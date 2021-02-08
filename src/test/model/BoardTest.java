@@ -17,14 +17,14 @@ class BoardTest {
 
     @BeforeEach
     void runBefore() {
-        defaultBoard = new Board(new Player(1, null, "1"),
-                new Player(-1, null, "-1"));
+        defaultBoard = new Board(new Player(1, "1"),
+                new Player(-1, "-1"));
 
-        player1WinBoard = new Board(new Player(1, null, "Gregory"),
-                new Player(-1, null, "Manny"));
+        player1WinBoard = new Board(new Player(1, "Gregory"),
+                new Player(-1, "Manny"));
 
-        player2WinBoard = new Board(new Player(1, null, "Loser"),
-                new Player(-1, null, "Winner"));
+        player2WinBoard = new Board(new Player(1, "Loser"),
+                new Player(-1, "Winner"));
 
         /*1. Gregory made the move C3
 2. Manny made the move C2

@@ -11,8 +11,8 @@ public class PlayerTest {
 
     @BeforeEach
     void runBefore() {
-        manos = new Player(1, null, "Manos");
-        thanny = new Player(-1, null, "Thanny");
+        manos = new Player(1, "Manos");
+        thanny = new Player(-1, "Thanny");
     }
 
     @Test
@@ -34,8 +34,8 @@ public class PlayerTest {
         assertNotEquals(thanny, manos);
         assertNotEquals(manos, "lol");
 
-        Player thanos1 = new Player(-1, null, "Thanos");
-        Player thanos2 = new Player(1, null, "Thanos");
+        Player thanos1 = new Player(-1, "Thanos");
+        Player thanos2 = new Player(1, "Thanos");
         assertEquals(thanos1, thanny);
         assertNotEquals(thanos2, thanny);
     }

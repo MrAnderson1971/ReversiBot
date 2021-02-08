@@ -105,15 +105,15 @@ public class Othello {
 
             int difficulty = getDifficulty();
 
-            Player player1 = new Player(1, null, player1name);
-            Player player2 = new Player(-1, null, player2name);
+            Player player1 = new Player(1, player1name);
+            Player player2 = new Player(-1, player2name);
             game = new Game(player1, player2);
             //player2.setAgent(new Tree(difficulty, game.getBoard(), player1, player2));
             player1.setAgent(new Tree(difficulty, game.getBoard(), player2, player1));
 
         } else {
-            game = new Game(new Player(1, null, player1name),
-                    new Player(-1, null, player2name));
+            game = new Game(new Player(1, player1name),
+                    new Player(-1, player2name));
         }
         runGame(game);
     }
@@ -141,7 +141,7 @@ public class Othello {
         while (!game.isOver()) {
             System.out.println(game.getBoard());
             System.out.println(game.getBoard().getCurrentPlayer() + "'s turn.");
-            game.update();
+            update(game.getBoard(), game.getMoveHistory());
             System.out.println(game.getMoveHistory().getLastMove());
         }
         System.out.println(game.getBoard().getWinner() + " won!");
@@ -174,7 +174,7 @@ public class Othello {
     REQUIRES: validMoves be list of valid moves.
     EFFECTS: takes user input and converts it into a square to place piece in
      */
-    public static int[] getMove(ArrayList<int[]> validMoves) {
+    public int[] getMove(ArrayList<int[]> validMoves) {
         Scanner scan = new Scanner(System.in);
         int[] move = new int[2];
         int x = -1;
@@ -222,6 +222,43 @@ public class Othello {
                 return 7;
             default:
                 return -1;
+        }
+    }
+
+    /*
+    MODIFIES: this, board, moveHistory
+    REQUIRES: board and moveHistory from the same game
+    EFFECTS: gets player / computer move, then executes move
+     */
+    public void update(Board board, MoveHistory moveHistory) {
+        try {
+            if (board.getCurrentPlayer().getAgent() == null) { // get player move
+                int[] move = getMove(board.getPossibleMoves());
+
+                moveHistory.add(move, board.getCurrentPlayer().toString());
+                board.makeMove(move[0], move[1]);
+
+                if (board.getCurrentPlayer().getAgent() != null) {
+                    // If opponent is computer, update computer AI tree.
+                    //board.getCurrentPlayer().getAgent().train();
+                    board.getCurrentPlayer().getAgent().updateMove(move);
+                    board.getCurrentPlayer().getAgent().train();
+                }
+
+            } else { // get computer move
+                //board.getCurrentPlayer().getAgent().train();
+                int[] move = board.getCurrentPlayer().getAgent().bestMove();
+                board.getCurrentPlayer().getAgent().train();
+                moveHistory.add(move, board.getCurrentPlayer().toString());
+                board.makeMove(move[0], move[1]);
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(moveHistory);
+            e.printStackTrace();
+            throw e;
+        }
+        if (board.isGameOver()) {
+            game.setOver(true);
         }
     }
 
