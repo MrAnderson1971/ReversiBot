@@ -3,6 +3,8 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TreeTest {
@@ -30,7 +32,7 @@ public class TreeTest {
 
     @Test
     void testTrain() {
-        Game game = new Game(player1, player2);
+        /*Game game = new Game(player1, player2);
         Board board = game.getBoard();
         int turns = 0;
         while (!board.isGameOver()) {
@@ -43,6 +45,36 @@ public class TreeTest {
 
         // No way player1 wins because it is weak
         assertTrue(player2.equals(board.getWinner()) || board.getWinner() == null);
-        assertNotEquals(player1, board.getWinner());
+        assertNotEquals(player1, board.getWinner());*/
+
+        int depth = 1;
+        while (!level10Tree.getCurrentMove().isLeaf()) {
+            System.out.println("Depth so far: " + depth++);
+            assertEquals(level10Tree.getCurrentMove().getBoard().getPossibleMoves().size(),
+                    level10Tree.getCurrentMove().getChildren().size());
+            level10Tree.bestMove();
+            level10Tree.train();
+        }
+
+        depth = 1;
+        while (!level1Tree.getCurrentMove().isLeaf()) {
+            System.out.println("Depth so far: " + depth++);
+            assertEquals(level1Tree.getCurrentMove().getBoard().getPossibleMoves().size(),
+                    level1Tree.getCurrentMove().getChildren().size());
+            level1Tree.bestMove();
+            level1Tree.train();
+        }
+    }
+
+    @Test
+    void testUpdateMove() {
+        level10Tree.updateMove(new int[]{2, 3});
+        assertEquals(Arrays.toString(new int[]{2, 3}), Arrays.toString(level10Tree.getCurrentMove().getMove()));
+
+        Exception e = assertThrows(IllegalArgumentException.class, () -> {
+            level10Tree.updateMove(new int[]{0, 0});
+        });
+
+        assertEquals("nope", e.getMessage());
     }
 }
