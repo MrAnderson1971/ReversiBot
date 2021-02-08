@@ -26,6 +26,13 @@ public class GameHistoryTest {
     @Test
     void testIsEmpty() {
         assertTrue(empty.isEmpty());
+        assertFalse(gh.isEmpty());
+    }
+
+    @Test
+    void testGet() {
+        assertNull(empty.get(0));
+        assertEquals(mh1, gh.get(1));
     }
 
     @Test
@@ -38,12 +45,13 @@ public class GameHistoryTest {
     @Test
     void testDelete() {
         assertEquals(1, gh.getKeyset().size());
-        gh.delete(1);
+        assertTrue(gh.delete(1));
         assertEquals(0, gh.getKeyset().size());
         gh.add("test", mh2, new Player(-1, null));
         assertEquals(1, gh.getKeyset().size());
         assertFalse(gh.getKeyset().contains(1));
-        gh.delete(2);
+        assertFalse(gh.delete(1));
+        assertTrue(gh.delete(2));
         assertEquals(0, gh.getKeyset().size());
     }
 

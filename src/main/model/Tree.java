@@ -29,10 +29,6 @@ public class Tree {
         this.currentMove = this.root;
     }
 
-    public Node getRoot() {
-        return root;
-    }
-
     public Node getCurrentMove() {
         return currentMove;
     }

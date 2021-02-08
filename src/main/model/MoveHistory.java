@@ -26,9 +26,10 @@ public class MoveHistory {
         return this.moves;
     }
 
+    /*
     public ArrayList<String> getNames() {
         return this.names;
-    }
+    }*/
 
     public Player getPlayer1() {
         return player1;
@@ -42,7 +43,7 @@ public class MoveHistory {
     EFFECTS: returns string representation of last move made.
      */
     public String getLastMove() {
-        return names.get(names.size() - 1) + " made the move " + moveToString(moves.get(moves.size() - 1));
+        return names.get(names.size() - 1) + " made the move " + moveToString(moves.get(moves.size() - 1)) + ".";
     }
 
     /*

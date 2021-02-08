@@ -68,13 +68,26 @@ public class TreeTest {
 
     @Test
     void testUpdateMove() {
+        for (Node child : level1Tree.getCurrentMove().getChildren()) {
+            System.out.println(Arrays.toString(child.getMove()));
+        }
         level10Tree.updateMove(new int[]{2, 3});
         assertEquals(Arrays.toString(new int[]{2, 3}), Arrays.toString(level10Tree.getCurrentMove().getMove()));
+
+        level1Tree.updateMove(new int[]{3, 2});
+        assertEquals(Arrays.toString(new int[]{3, 2}), Arrays.toString(level1Tree.getCurrentMove().getMove()));
 
         Exception e = assertThrows(IllegalArgumentException.class, () -> {
             level10Tree.updateMove(new int[]{0, 0});
         });
 
         assertEquals("nope", e.getMessage());
+    }
+
+    @Test
+    void testBestMove() {
+        Node bestNode = level10Tree.getCurrentMove().bestMove();
+        assertEquals(Arrays.toString(bestNode.getMove()), Arrays.toString(level10Tree.bestMove()));
+        assertEquals(bestNode, level10Tree.getCurrentMove());
     }
 }
