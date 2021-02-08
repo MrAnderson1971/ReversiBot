@@ -25,13 +25,13 @@ public class NodeTest {
         ArrayList<Node> children = new ArrayList<>();
         Node child = new Node(null, null, null);
         child.addGame();
-        child.setWins(1);
+        child.setWins(-2);
         children.add(child);
         child = new Node(null, null, null);
         child.addGame();
         child.addGame();
         child.addGame();
-        child.setWins(-1);
+        child.setWins(-5);
         children.add(child);
         child = new Node(null, null, null);
         children.add(child);
@@ -70,7 +70,7 @@ public class NodeTest {
     @Test
     void testBestNode() {
         assertEquals(childNode, rootNode.bestNode());
-        assertEquals(parentNode2.getChildren().get(0), parentNode2.bestNode());
+        assertEquals(parentNode2.getChildren().get(2), parentNode2.bestNode());
     }
 
     @Test
@@ -88,6 +88,26 @@ public class NodeTest {
     void testBestMove() {
         assertEquals(childNode, rootNode.bestMove());
         assertEquals(parentNode2.getChildren().get(1), parentNode2.bestMove());
+    }
+
+    @Test
+    void testGetBoard() {
+        assertNull(rootNode.getBoard());
+    }
+
+    @Test
+    void testGetWins() {
+        assertEquals(0.0, rootNode.getWins());
+    }
+
+    @Test
+    void testGetMove() {
+        assertNull(rootNode.getMove());
+    }
+
+    @Test
+    void testGetPlayer() {
+        assertNull(rootNode.getPlayer());
     }
 
 }

@@ -53,7 +53,7 @@ public class Tree {
     MODIFIES: this
     EFFECTS: returns best leaf node found in tree
      */
-    public void selection() {
+    private void selection() {
         Node current = currentMove;
         while (!current.isLeaf()) {
             current = current.bestNode();
@@ -66,7 +66,7 @@ public class Tree {
     MODIFIES: this, leaf
     EFFECTS: add every possible next move as child to leaf
      */
-    public Player expansion() {
+    private Player expansion() {
         Board b = leaf.getBoard();
         ArrayList<Node> children = new ArrayList<>();
         ArrayList<int[]> possibleMoves = b.getPossibleMoves();
@@ -87,7 +87,7 @@ public class Tree {
     /*
     EFFECTS: returns which player won as a result of making moves at random
      */
-    public Player simulation() {
+    private Player simulation() {
         Board board = leaf.getBoard().clone();
         while (!board.isGameOver()) {
             ArrayList<int[]> moves = board.getPossibleMoves();
@@ -101,7 +101,7 @@ public class Tree {
     MODIFIES: this
     EFFECTS: updates all parent/grandparent etc. nodes of leaf with information on how many wins
      */
-    public void backpropagation(Player winner) {
+    private void backpropagation(Player winner) {
         Node current = leaf;
         while (current.getParent() != null) {
             current.addGame();
