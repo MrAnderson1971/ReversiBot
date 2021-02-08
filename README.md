@@ -20,7 +20,6 @@ tree search algorithm that can play the game proficiently.
 ### User stories
 
 - As a user, I want to be able to play a 2 player Othello game against another human player.
-- As a user, I also want to be able to play an Othello game against a computer opponent.
-- As a user, I want to be able to adjust the difficulty of computer opponents.
+- As a user, I also want to be able to play an Othello game against a computer opponent with an adjustable difficulty.
 - As a user, I want to be able to view a record of all moves made by both players when a game ends.
-- As a user, I want to add "log" to "record" so that I can view replays of previous games.
+- As a user, I want to add/delete logs of all moves made during a game to/from "record" so that I can view replays of previous games.
