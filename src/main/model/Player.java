@@ -13,6 +13,8 @@ public class Player {
     private int piece;
 
     /*
+    REQUIRES: piece either +1 or -1.
+        should be negative of opponent's piece
     EFFECTS: instantiates a Player
      */
     public Player(int piece, String name) {
@@ -29,6 +31,9 @@ public class Player {
         return agent;
     }
 
+    /*
+    EFFECTS: returns player's name
+     */
     @Override
     public String toString() {
         return name;
@@ -47,7 +52,6 @@ public class Player {
     /*
     EFFECTS: true if other is equal to this.
      */
-
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof Player)) {

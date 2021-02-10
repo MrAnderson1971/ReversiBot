@@ -19,6 +19,8 @@ public class Tree {
     private Node currentMove;
 
     /*
+    REQUIRES: player should be whoever is making the next move in board
+        opponent should be player's opponent
     EFFECTS: creates new MCTS search tree
      */
     public Tree(int depth, Board board, Player player, Player opponent) {
@@ -52,6 +54,7 @@ public class Tree {
     /*
     MODIFIES: this
     EFFECTS: returns best leaf node found in tree
+        by traversing the tree and selecting the one with highest UCT's
      */
     private void selection() {
         Node current = currentMove;
@@ -65,6 +68,8 @@ public class Tree {
     REQUIRES: leaf should be a leaf node (without children)
     MODIFIES: this, leaf
     EFFECTS: add every possible next move as child to leaf
+        if one of the nodes wins the game, return the winner
+        else return null if no winner yet
      */
     private Player expansion() {
         Board b = leaf.getBoard();
@@ -100,6 +105,7 @@ public class Tree {
     /*
     MODIFIES: this
     EFFECTS: updates all parent/grandparent etc. nodes of leaf with information on how many wins
+        as well as how many times it has been visited (ie: # of games played)
      */
     private void backpropagation(Player winner) {
         Node current = leaf;
@@ -119,6 +125,7 @@ public class Tree {
     /*
     MODIFIES: this
     EFFECTS: returns the most promising move, then updates the tree
+        most promising move = one that maximizes chances of opponent losing
      */
     public int[] bestMove() {
         Node bestNode = currentMove.bestMove();
@@ -131,6 +138,7 @@ public class Tree {
     REQUIRES: move is a valid move
     MODIFIES: this
     EFFECTS: updates tree so that current move is the move that was just made
+        if no corresponding node found, throws an exception
      */
     public void updateMove(int[] move) {
         for (Node child : currentMove.getChildren()) {
@@ -139,6 +147,6 @@ public class Tree {
                 return;
             }
         }
-        throw new IllegalArgumentException("nope");
+        throw new IllegalArgumentException("Node not found.");
     }
 }

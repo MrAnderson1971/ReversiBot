@@ -13,7 +13,9 @@ public class MoveHistory {
     private Player player1;
     private Player player2;
 
-    // EFFECTS: instantiate
+    /*
+    EFFECTS: creates new MoveHistory object to store log of all moves made
+     */
     public MoveHistory(Player player1, Player player2) {
         this.moves = new ArrayList<>();
         this.names = new ArrayList<>();
@@ -47,7 +49,8 @@ public class MoveHistory {
     }
 
     /*
-    REQUIRES: be a valid move
+    REQUIRES: move be a valid move
+        name be the name of either Player 1 or Player 2
     MODIFIES: this
     EFFECTS: adds move to record
      */
@@ -82,9 +85,13 @@ public class MoveHistory {
         }
     }
 
+    /*
+    REQUIRES: move is a valid move
+    EFFECTS: returns a string representation of move
+     */
     public String moveToString(int[] move) {
         String s = String.valueOf(intToChar(move[0]));
-        return s + Integer.toString(move[1]);
+        return s + move[1];
     }
 
     /*
