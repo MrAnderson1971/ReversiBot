@@ -16,6 +16,10 @@ public class GameHistory {
 
     private int currentNumber;
 
+    /*
+    EFFECTS: creates new GameHistory object to store replays in
+    Only needs to be instantiated once.
+     */
     public GameHistory() {
         displayMenu = new TreeMap<>();
         allGames = new HashMap<>();

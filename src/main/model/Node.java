@@ -18,7 +18,10 @@ public class Node {
     private Node parent;
 
     /*
-    EFFECTS: instantiates new Node
+    REQUIRES: move is a valid move
+        board is a valid board and results from making move to board of parent node
+        player either player 1 or player 2, should alternate between parent/children nodes
+    EFFECTS: instantiates new Node for MCTS
      */
     public Node(Board board, int[] move, Player player) {
         this.board = board;

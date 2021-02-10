@@ -16,6 +16,10 @@ public class Board implements Cloneable {
     private Player player1;
     private Player player2;
 
+    /*
+    EFFECTS: creates new Board object.
+    Places 4 pieces (2 white 2 black) in starter position.
+     */
     public Board(Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
@@ -43,7 +47,7 @@ public class Board implements Cloneable {
 
     /*
     REQUIRES: move be valid move
-    MODIFIERS: this
+    MODIFIES: this
     EFFECTS: places piece corresponding to currentPlayer at spot, then swaps players
      */
     public void makeMove(int x, int y) {
@@ -88,7 +92,7 @@ public class Board implements Cloneable {
     }
 
     /*
-    EFFECTS: true if game over
+    EFFECTS: returns true if game over
      */
     public boolean isGameOver() {
         return getPossibleMoves().size() == 0; // game over if no possible moves left
@@ -116,7 +120,7 @@ public class Board implements Cloneable {
     EFFECTS: true if valid move for currentPlayer
      */
     public boolean isPossibleMove(int x, int y) {
-        return board[x][y] == 0 && getCapturable(x, y).size() > 0;
+        return board[x][y] == 0 && getCapturable(x, y).size() > 0; // all moves must capture at least one enemy piece
     }
 
     /*
@@ -139,8 +143,8 @@ public class Board implements Cloneable {
     }
 
     /*
-    REQUIRES: dx, dy either +/- 1
-    EFFECTS: searches one direction for capturable pieces
+    REQUIRES: dx, dy either +/- 1, 0 <= x, y < 8
+    EFFECTS: searches one direction for enemy pieces to capture
      */
     private ArrayList<int[]> searchOneDirection(int x, int y, int dx, int dy) {
         ArrayList<int[]> temp = new ArrayList<>();
@@ -186,6 +190,9 @@ public class Board implements Cloneable {
         return s.toString();
     }
 
+    /*
+    EFFECTS: returns a copy of this Board
+     */
     @Override
     public Board clone() {
         int[][] newArray = new int[8][8];
