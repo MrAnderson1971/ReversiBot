@@ -74,7 +74,9 @@ public class Node {
     }
 
     /*
-    EFFECTS: returns a value useful for selecting nodes in the tree search according to a formula
+    EFFECTS: returns a value useful for selecting nodes in the tree search according to a formula.
+        The formula is called UCT (Upper Confidence Bound applied to trees)
+        uct = wins / games + sqrt((2ln parentWins) / games)
      */
     public double uct() {
         return wins / games + Math.sqrt((2 * Math.log(parent.games)) / games);
