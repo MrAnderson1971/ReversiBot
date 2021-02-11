@@ -90,6 +90,7 @@ public class NodeTest {
         assertEquals(parentNode2.getChildren().get(1), parentNode2.bestMove());
     }
 
+    /*
     @Test
     void testGetBoard() {
         assertNull(rootNode.getBoard());
@@ -108,6 +109,6 @@ public class NodeTest {
     @Test
     void testGetPlayer() {
         assertNull(rootNode.getPlayer());
-    }
+    }*/
 
 }
