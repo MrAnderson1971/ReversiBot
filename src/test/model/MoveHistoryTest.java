@@ -74,6 +74,7 @@ public class MoveHistoryTest {
         assertTrue(Arrays.equals(moves.get(7), new int[]{0, 0}));
     }
 
+    /*
     @Test
     void testGetPlayer1() {
         assertEquals("Player 1", defaultHistory.getPlayer1().toString());
@@ -82,6 +83,6 @@ public class MoveHistoryTest {
     @Test
     void testGetPlayer2() {
         assertEquals("Player 2", defaultHistory.getPlayer2().toString());
-    }
+    }*/
 
 }
