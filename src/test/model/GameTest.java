@@ -37,10 +37,9 @@ public class GameTest {
         assertTrue(g.isOver());
     }
 
-    /*
     @Test
     void testGetBoard() {
         assertEquals("1", g.getBoard().getCurrentPlayer().toString());
-    }*/
+    }
 
 }
