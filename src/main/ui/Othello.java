@@ -199,8 +199,9 @@ public class Othello {
     }
 
     /*
-    REQUIRES: char is a letter between A - B (either uppercase or lowercase is fine)
+    REQUIRES: char is a letter between A - H (either uppercase or lowercase is fine)
     EFFECTS: takes char A-H and converts it into number
+        A => 0, B => 1, etc.
      */
     private static int letterToNumber(char c) {
         switch (c) {

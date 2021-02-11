@@ -60,7 +60,9 @@ public class MoveHistory {
     }
 
     /*
+    REQUIRES: 0 <= i <= 7
     EFFECTS: takes integer returns uppercase letter corresponding to it.
+        0 => A, 1 => B, etc.
      */
     private char intToChar(int i) {
         switch (i) {

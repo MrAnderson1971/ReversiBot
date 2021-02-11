@@ -37,7 +37,12 @@ public class Tree {
 
     /*
     MODIFIES: this
-    EFFECTS: trains the AI
+    EFFECTS: "trains" the AI using Monte Carlo Tree Search algorithm
+        Step 1: find a leaf node
+        Step 2: unless leaf node found has a game over, extend the leaf node
+            by all possible next moves
+        Step 3: Simulate random playout starting from the position from the previous step
+        Step 4: Update all parent nodes from the leaf to the root about who won the random playout.
     */
     public void train() {
         double searchTimes = Math.pow(2, depth);
