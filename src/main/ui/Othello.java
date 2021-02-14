@@ -108,8 +108,8 @@ public class Othello {
             Player player1 = new Player(1, player1name);
             Player player2 = new Player(-1, player2name);
             game = new Game(player1, player2);
-            //player2.setAgent(new Tree(1, game.getBoard(), player1, player2));
-            player1.setAgent(new Tree(difficulty, game.getBoard(), player2, player1));
+            //player2.setAgent(new Tree(difficulty, game.getBoard(), player1, player2)); // comment this out
+            player1.setAgent(new Tree(difficulty, game.getBoard()));
 
         } else {
             game = new Game(new Player(1, player1name),

@@ -3,7 +3,7 @@ package model;
 /*
 Represents one player for Othello game.
  */
-public class Player {
+public class Player implements Cloneable {
 
     private Tree agent;
     private String name;
@@ -59,5 +59,9 @@ public class Player {
         }
         Player p = (Player) other;
         return this.piece == p.piece;
+    }
+
+    public Player clone() {
+        return new Player(piece, name);
     }
 }

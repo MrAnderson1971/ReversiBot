@@ -20,8 +20,8 @@ public class MoveHistory {
         this.moves = new ArrayList<>();
         this.names = new ArrayList<>();
 
-        this.player1 = player1;
-        this.player2 = player2;
+        this.player1 = player1.clone();
+        this.player2 = player2.clone();
     }
 
     public ArrayList<int[]> getMoves() {
