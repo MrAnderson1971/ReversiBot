@@ -26,8 +26,8 @@ public class TreeTest {
 
         player1 = new Player(1, "one");
         player2 = new Player(-1, "two");
-        level1Tree = new Tree(1, new Board(player1, player2), player1, player2);
-        level10Tree = new Tree(10, new Board(player1, player2), player2, player1);
+        level1Tree = new Tree(1, new Board(player1, player2));
+        level10Tree = new Tree(10, new Board(player1, player2));
         player1.setAgent(level1Tree);
         player2.setAgent(level10Tree);
     }
@@ -54,23 +54,25 @@ public class TreeTest {
         //assertTrue(player2.equals(board.getWinner()) || board.getWinner() == null);
         assertNotEquals(player1, board.getWinner());*/
 
-        int depth = 1;
-        while (!level10Tree.getCurrentMove().isLeaf()) {
-            System.out.println("Depth so far: " + depth++);
+        for (int lvl = 1; lvl <= 10; lvl++) {
+            Tree tree = new Tree(lvl, new Board(player1, player2));
+            player1.setAgent(tree);
+            int depth = 1;
+            while (!tree.getCurrentMove().isLeaf()) {
+                System.out.println("Depth so far: " + depth++ + ", level: " + lvl);
+/*
             assertEquals(level10Tree.getCurrentMove().getBoard().getPossibleMoves().size(),
-                    level10Tree.getCurrentMove().getChildren().size());
-            level10Tree.bestMove();
-            level10Tree.train();
+                    level10Tree.getCurrentMove().getChildren().size());*/
+                assertTrue((tree.getCurrentMove().getBoard() == null) ||
+                        (tree.getCurrentMove() != null &&
+                                tree.getCurrentMove().getBoard().getPossibleMoves().size() == 0));
+
+                tree.bestMove();
+                tree.train();
+            }
+            System.out.println("done level " + lvl);
         }
 
-        depth = 1;
-        while (!level1Tree.getCurrentMove().isLeaf()) {
-            System.out.println("Depth so far: " + depth++);
-            assertEquals(level1Tree.getCurrentMove().getBoard().getPossibleMoves().size(),
-                    level1Tree.getCurrentMove().getChildren().size());
-            level1Tree.bestMove();
-            level1Tree.train();
-        }
     }
 
     @Test

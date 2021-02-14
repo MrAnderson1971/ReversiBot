@@ -7,12 +7,9 @@ Represents the MCTS search tree for the AI
  */
 public class Tree {
 
-    private Player player;
-    private Player opponent;
-
     private int depth;
 
-    private Node root;
+    //private Node root;
 
     private Node leaf;
 
@@ -23,12 +20,10 @@ public class Tree {
         opponent should be player's opponent
     EFFECTS: creates new MCTS search tree
      */
-    public Tree(int depth, Board board, Player player, Player opponent) {
+    public Tree(int depth, Board board) {
         this.depth = depth;
-        this.player = player;
-        this.opponent = opponent;
-        this.root = new Node(board, null, player);
-        this.currentMove = this.root;
+        this.currentMove = new Node(board, null, board.getCurrentPlayer());
+        //this.currentMove = this.root;
     }
 
     public Node getCurrentMove() {

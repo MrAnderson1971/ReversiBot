@@ -24,7 +24,7 @@ public class PlayerTest {
     @Test
     void testSetAgent() {
         assertNull(thanny.getAgent());
-        Tree agent = new Tree(1, new Board(thanny, manos), thanny, manos);
+        Tree agent = new Tree(1, new Board(thanny, manos));
         thanny.setAgent(agent);
         assertEquals(agent, thanny.getAgent());
     }

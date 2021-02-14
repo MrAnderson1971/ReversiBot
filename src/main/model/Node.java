@@ -113,6 +113,7 @@ public class Node {
         for (Node child : children) {
             this.children.add(child);
             child.parent = this;
+            child.parent.board = null; // save memory
         }
     }
 
