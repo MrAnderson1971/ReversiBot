@@ -21,6 +21,7 @@ public class Game {
     private MoveHistory moveHistory;
 
     /*
+    REQUIRES: player1, player2 opponents of each other with opposite pieces
     EFFECTS: creates new Game object
      */
     public Game(Player player1, Player player2) {

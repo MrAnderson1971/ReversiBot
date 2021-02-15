@@ -16,8 +16,7 @@ public class Tree {
     private Node currentMove;
 
     /*
-    REQUIRES: player should be whoever is making the next move in board
-        opponent should be player's opponent
+    REQUIRES: depth positive integer, and not too big
     EFFECTS: creates new MCTS search tree
      */
     public Tree(int depth, Board board) {
