@@ -108,7 +108,7 @@ public class Othello {
             Player player1 = new Player(1, player1name);
             Player player2 = new Player(-1, player2name);
             game = new Game(player1, player2);
-            //player2.setAgent(new Tree(difficulty, game.getBoard(), player1, player2)); // comment this out
+            //player2.setAgent(new Tree(difficulty, game.getBoard())); // comment this out
             player1.setAgent(new Tree(difficulty, game.getBoard()));
 
         } else {
@@ -146,6 +146,7 @@ public class Othello {
         }
         System.out.println(game.getBoard().getWinner() + " won!");
         System.out.println(game.getBoard());
+        System.out.println(game.getMoveHistory());
         System.out.println("Enter a name for this game:");
 
         String gameName = scan.nextLine();
