@@ -5,7 +5,9 @@
 - What will the application do?  
 
 The application will provide a computer version of the strategy board game *Othello*, also known as *Reversi*. 
-The board consists of 8x8 squares, along with 64 pieces, each black on one side and white on the other.
+The board consists of 8x8 squares, along with 64 pieces, each black on one side and white on the other. When a player places a piece, any opposing pieces between the piece that was just placed and another friendly piece (either horizontally, vertically, or diagonally) gets "flipped" and become friendly pieces. Game ends when a player has no moves left. Whoever has the most amount of friendly pieces on the board wins.
+
+This application supports player vs player and player vs computer.
 
 - Who will use it?
 
