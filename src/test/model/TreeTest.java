@@ -63,6 +63,9 @@ public class TreeTest {
 /*
             assertEquals(level10Tree.getCurrentMove().getBoard().getPossibleMoves().size(),
                     level10Tree.getCurrentMove().getChildren().size());*/
+                if (tree.getCurrentMove().getParent() != null) {
+                    assertNotSame(tree.getCurrentMove().getParent().getPlayer(), tree.getCurrentMove().getPlayer());
+                }
                 assertTrue((tree.getCurrentMove().getBoard() == null) ||
                         (tree.getCurrentMove() != null &&
                                 tree.getCurrentMove().getBoard().getPossibleMoves().size() == 0));
