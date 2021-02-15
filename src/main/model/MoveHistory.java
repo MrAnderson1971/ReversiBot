@@ -14,6 +14,7 @@ public class MoveHistory {
     private Player player2;
 
     /*
+    REQUIRES: player1, player2 opponents of each other with opposite pieces
     EFFECTS: creates new MoveHistory object to store log of all moves made
      */
     public MoveHistory(Player player1, Player player2) {
