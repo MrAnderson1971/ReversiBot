@@ -67,39 +67,16 @@ public class JsonWriterTest {
             writer.close();
 
             JsonReader reader = new JsonReader(f);
-            String out = reader.readFile(f);
-            assertEquals("{    \"games\": [{       " +
-                    " \"game\": {            \"names\": [             " +
-                    "   \"Player 1\",             " +
-                    "   \"Player 2\",         " +
-                    "       \"Player 1\",          " +
-                    "      \"Player 2\",          " +
-                    "      \"Player 1\",          " +
-                    "      \"Player 2\",       " +
-                    "         \"Player 1\",           " +
-                    "     \"Player 2\"      " +
-                    "      ],            \"moves\": [     " +
-                    "           [              " +
-                    "      1,               " +
-                    "     1                " +
-                    "],                [       " +
-                    "             2,          " +
-                    "          2                ],         " +
-                    "       [                    3,            " +
-                    "        4                ],             " +
-                    "   [                    4,                " +
-                    "    4                ],                [    " +
-                    "                5,                    5                ],    " +
-                    "            [                    6,                    6         " +
-                    "       ],                [     " +
-                    "               7,             " +
-                    "       2                ],        " +
-                    "        [                    0,   " +
-                    "                 0           " +
-                    "     ]            ]        },  " +
-                    "      \"id\": 1    }],    \"menus\": [{    " +
-                    "    \"winner\": \"Player 1\",        \"name\": \"Test\",    " +
-                    "    \"id\": 1    }]}", out);
+            GameHistory gh2 = (GameHistory) reader.load();
+            assertEquals(1, gh2.getKeyset().size());
+            assertEquals("1. Player 1 made the move B1\n" +
+                    "2. Player 2 made the move C2\n" +
+                    "3. Player 1 made the move D4\n" +
+                    "4. Player 2 made the move E4\n" +
+                    "5. Player 1 made the move F5\n" +
+                    "6. Player 2 made the move G6\n" +
+                    "7. Player 1 made the move H2\n" +
+                    "8. Player 2 made the move A0\n", gh2.get(1).toString());
         } catch (IOException e) {
             fail(e);
         }
