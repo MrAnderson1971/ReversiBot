@@ -1,11 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writeable;
+
 import java.util.*;
 
 /*
 Keeps tracks of all games played so far
  */
-public class GameHistory {
+public class GameHistory implements Writeable {
 
     // Maps a number to game name for display in menus
     // TreeMap because I need them to print in order
@@ -31,7 +35,7 @@ public class GameHistory {
     EFFECTS: adds a game to the record, increments id for next game
      */
     public void add(String name, MoveHistory game, Player winner) {
-        displayMenu.put(currentNumber, new ArrayList<>(Arrays.asList(name, winner.toString())));
+        displayMenu.put(currentNumber, new ArrayList<>(Arrays.asList(name, "" + winner)));
         allGames.put(currentNumber, game);
         currentNumber++;
     }
@@ -84,4 +88,33 @@ public class GameHistory {
         }
         return s.toString();
     }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        JSONArray gamesArray = new JSONArray();
+        JSONArray menusArray = new JSONArray();
+
+        for (int mh : allGames.keySet()) {
+            JSONObject obj = new JSONObject();
+            obj.put("id", mh);
+            obj.put("game", allGames.get(mh).toJson());
+            gamesArray.put(obj);
+        }
+
+        for (int mh : displayMenu.keySet()) {
+            JSONArray a = new JSONArray();
+            JSONObject obj = new JSONObject();
+            obj.put("id", "" + mh);
+            obj.put("name", displayMenu.get(mh).get(0));
+            obj.put("winner", displayMenu.get(mh).get(1));
+            a.put(obj);
+            menusArray.put(a);
+        }
+
+        json.put("games", gamesArray);
+        json.put("menus", menusArray);
+        return json;
+    }
+
 }

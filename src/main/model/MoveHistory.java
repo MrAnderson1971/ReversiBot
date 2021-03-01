@@ -1,11 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writeable;
+
 import java.util.*;
 
 /*
 Keeps track of all moves made in a game so far.
  */
-public class MoveHistory {
+public class MoveHistory implements Writeable {
 
     private ArrayList<int[]> moves;
     private ArrayList<String> names;
@@ -28,11 +32,6 @@ public class MoveHistory {
     public ArrayList<int[]> getMoves() {
         return this.moves;
     }
-
-    /*
-    public ArrayList<String> getNames() {
-        return this.names;
-    }*/
 
     public Player getPlayer1() {
         return player1;
@@ -120,5 +119,24 @@ public class MoveHistory {
         s.append(moveNumber + 1).append(". ").append(names.get(moveNumber));
         s.append(" made the move ").append(moveToString(moves.get(moveNumber))).append(".");
         return s.toString();
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        JSONArray moveArray = new JSONArray();
+        JSONArray nameArray = new JSONArray();
+
+        for (int[] move : moves) {
+            moveArray.put(move);
+        }
+
+        for (String name : names) {
+            nameArray.put(name);
+        }
+
+        json.put("moves", moveArray);
+        json.put("names", nameArray);
+        return json;
     }
 }

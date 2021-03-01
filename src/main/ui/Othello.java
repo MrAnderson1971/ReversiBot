@@ -1,7 +1,10 @@
 package ui;
 
 import model.*;
+import persistence.JsonWriter;
+import persistence.Writeable;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
 /*
@@ -9,14 +12,19 @@ Othello board game.
  */
 public class Othello {
 
-    Game game;
+    public static final String SAVE_FILE = "./data/save.json";
+
+    private Game game;
 
     private GameHistory gameHistory;
     private Scanner scan = new Scanner(System.in);
 
+    private JsonWriter jsonWriter;
+
     // EFFECTS: runs the game
     public Othello() {
         gameHistory = new GameHistory();
+        jsonWriter = new JsonWriter(SAVE_FILE);
         while (true) {
             menu();
             start();
@@ -108,7 +116,7 @@ public class Othello {
             Player player1 = new Player(1, player1name);
             Player player2 = new Player(-1, player2name);
             game = new Game(player1, player2);
-            //player2.setAgent(new Tree(difficulty, game.getBoard())); // comment this out
+            player2.setAgent(new Tree(difficulty, game.getBoard())); // comment this out
             player1.setAgent(new Tree(difficulty, game.getBoard()));
 
         } else {
@@ -152,6 +160,7 @@ public class Othello {
         String gameName = scan.nextLine();
 
         gameHistory.add(gameName, game.getMoveHistory(), game.getBoard().getWinner());
+        saveGameHistory(gameHistory);
     }
 
     /*
@@ -273,6 +282,16 @@ public class Othello {
             }
         }
         return false;
+    }
+
+    public void saveGameHistory(Writeable gh) {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(gameHistory);
+            jsonWriter.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("Error in writing to save file.");
+        }
     }
 
 }
