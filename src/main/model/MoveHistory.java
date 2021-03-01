@@ -41,6 +41,11 @@ public class MoveHistory implements Writeable {
         return player2;
     }
 
+    public void set(ArrayList<String> names, ArrayList<int[]> moves) {
+        this.names = names;
+        this.moves = moves;
+    }
+
     /*
     EFFECTS: returns string representation of last move made.
      */
