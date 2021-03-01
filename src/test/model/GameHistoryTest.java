@@ -3,6 +3,9 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameHistoryTest {
@@ -61,5 +64,11 @@ public class GameHistoryTest {
         assertEquals("1. Infinity War | Manos won\n", gh.toString());
         gh.add("test", mh2, new Player(-1, null));
         assertEquals("1. Infinity War | Manos won\n2. test | null won\n", gh.toString());
+    }
+
+    @Test
+    void testMax() {
+        ArrayList<Integer> a = new ArrayList<>(Arrays.asList(1, 6, 2, 4, 6, 3, 7, 7, 333, 6));
+        assertEquals(333, GameHistory.max(a));
     }
 }
