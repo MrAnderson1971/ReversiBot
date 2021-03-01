@@ -1,10 +1,12 @@
 package ui;
 
 import model.*;
+import persistence.JsonReader;
 import persistence.JsonWriter;
 import persistence.Writeable;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -20,11 +22,14 @@ public class Othello {
     private Scanner scan = new Scanner(System.in);
 
     private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs the game
     public Othello() {
-        gameHistory = new GameHistory();
         jsonWriter = new JsonWriter(SAVE_FILE);
+        jsonReader = new JsonReader(SAVE_FILE);
+        gameHistory = loadGameHistory();
+        //gameHistory = new GameHistory();
         while (true) {
             menu();
             start();
@@ -292,6 +297,18 @@ public class Othello {
         } catch (FileNotFoundException e) {
             System.err.println("Error in writing to save file.");
         }
+    }
+
+    public GameHistory loadGameHistory() {
+        GameHistory gh = new GameHistory();
+        try {
+            gh = (GameHistory) jsonReader.load();
+        } catch (FileNotFoundException e) {
+            // pass
+        } catch (IOException e) {
+            System.err.println("Could not read file.");
+        }
+        return gh;
     }
 
 }

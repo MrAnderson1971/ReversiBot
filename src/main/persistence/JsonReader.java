@@ -2,6 +2,7 @@ package persistence;
 
 import model.GameHistory;
 import model.MoveHistory;
+import model.Player;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -32,17 +33,20 @@ public class JsonReader {
         return loadObject(jsonObject);
     }
 
-    public GameHistory loadObject(JSONObject jsonObject) {
+    private GameHistory loadObject(JSONObject jsonObject) {
         TreeMap<Integer, ArrayList<String>> menus = getMenus(jsonObject);
-        return null;
+        HashMap<Integer, MoveHistory> games = getMoveHistories(jsonObject);
+        GameHistory gh = new GameHistory();
+        gh.set(menus, games);
+        return gh;
     }
 
-    public TreeMap<Integer, ArrayList<String>> getMenus(JSONObject jsonObject) {
+    private TreeMap<Integer, ArrayList<String>> getMenus(JSONObject jsonObject) {
         JSONArray menus = jsonObject.getJSONArray("menus");
         TreeMap<Integer, ArrayList<String>> menu = new TreeMap<>();
         for (Object obj : menus) {
             JSONObject json = (JSONObject) obj;
-            int index = Integer.parseInt(json.getString("id"));
+            int index = json.getInt("id");
             String gameName = json.getString("name");
             String winner = json.getString("winner");
 
@@ -52,9 +56,27 @@ public class JsonReader {
         return menu;
     }
 
-    public MoveHistory getMoveHistory(JSONObject jsonObject) {
-        MoveHistory mh = new MoveHistory(null, null);
-        return mh;
+    private HashMap<Integer, MoveHistory> getMoveHistories(JSONObject jsonObject) {
+        HashMap<Integer, MoveHistory> map = new HashMap<>();
+        JSONArray games = jsonObject.getJSONArray("games");
+        for (Object obj : games) {
+            JSONObject json = (JSONObject) obj;
+            int id = json.getInt("id");
+            JSONObject game = json.getJSONObject("game");
+            ArrayList<String> names = new ArrayList<>();
+            for (Object j : game.getJSONArray("names")) {
+                names.add((String) j);
+            }
+            ArrayList<int[]> moves = new ArrayList<>();
+            for (Object j : game.getJSONArray("moves")) {
+                JSONArray k = (JSONArray) j;
+                moves.add(new int[] {(int) k.get(0), (int) k.get(1)});
+            }
+            MoveHistory m = new MoveHistory(new Player(1, names.get(0)), new Player(-1, names.get(1)));
+            m.set(names, moves);
+            map.put(id, m);
+        }
+        return map;
     }
 
     /*

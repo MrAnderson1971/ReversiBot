@@ -40,6 +40,12 @@ public class GameHistory implements Writeable {
         currentNumber++;
     }
 
+    public void set(TreeMap<Integer, ArrayList<String>> displayMenu, HashMap<Integer, MoveHistory> allGames) {
+        this.displayMenu = displayMenu;
+        this.allGames = allGames;
+        currentNumber = max(this.displayMenu.keySet()) + 1;
+    }
+
     /*
     REQUIRES: i be valid key of allGames
     EFFECTS: returns value (game) corresponding to i
@@ -105,16 +111,29 @@ public class GameHistory implements Writeable {
         for (int mh : displayMenu.keySet()) {
             JSONArray a = new JSONArray();
             JSONObject obj = new JSONObject();
-            obj.put("id", "" + mh);
+            obj.put("id", mh);
             obj.put("name", displayMenu.get(mh).get(0));
             obj.put("winner", displayMenu.get(mh).get(1));
             a.put(obj);
-            menusArray.put(a);
+            menusArray.put(obj);
         }
 
         json.put("games", gamesArray);
         json.put("menus", menusArray);
         return json;
+    }
+
+    /*
+    EFFECTS: returns the maximum value of a collection of integers
+     */
+    public static int max(Collection<Integer> c) {
+        int max = Integer.MIN_VALUE;
+        for (int i : c) {
+            if (i > max) {
+                max = i;
+            }
+        }
+        return max;
     }
 
 }
