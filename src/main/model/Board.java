@@ -1,7 +1,6 @@
 package model;
 
 import java.util.*;
-
 import static ui.Othello.listContainsArray;
 
 /*

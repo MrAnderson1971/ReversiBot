@@ -25,3 +25,6 @@ tree search algorithm that can play the game proficiently.
 - As a user, I also want to be able to play an Othello game against a computer opponent with an adjustable difficulty.
 - As a user, I want to be able to view a record of all moves made by both players when a game ends.
 - As a user, I want to add/delete logs of all moves made during a game to/from "record" so that I can view replays of previous games.
+
+- As a user, I want to be able to autosave the game history record to a file.
+- As a user, I want to be able to autoload the game history record from a file.
