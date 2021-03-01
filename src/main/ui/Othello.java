@@ -5,6 +5,7 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 import persistence.Writeable;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
@@ -96,6 +97,7 @@ public class Othello {
             switch (input) {
                 case "D":
                     gameHistory.delete(selection);
+                    saveGameHistory(gameHistory);
                     return;
                 case "B":
                     return;
@@ -121,7 +123,7 @@ public class Othello {
             Player player1 = new Player(1, player1name);
             Player player2 = new Player(-1, player2name);
             game = new Game(player1, player2);
-            player2.setAgent(new Tree(difficulty, game.getBoard())); // comment this out
+            //player2.setAgent(new Tree(difficulty, game.getBoard())); // comment this out
             player1.setAgent(new Tree(difficulty, game.getBoard()));
 
         } else {
@@ -301,10 +303,12 @@ public class Othello {
 
     public GameHistory loadGameHistory() {
         GameHistory gh = new GameHistory();
+        File tempFile = new File(SAVE_FILE);
+        if (!tempFile.exists()) {
+            return gh; // File doesn't exist
+        }
         try {
             gh = (GameHistory) jsonReader.load();
-        } catch (FileNotFoundException e) {
-            // pass
         } catch (IOException e) {
             System.err.println("Could not read file.");
         }
