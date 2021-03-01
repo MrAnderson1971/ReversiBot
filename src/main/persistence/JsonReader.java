@@ -33,15 +33,21 @@ public class JsonReader {
         return loadObject(jsonObject);
     }
 
+    /*
+    EFFECTS: loads GameHistory object from file.
+     */
     private GameHistory loadObject(JSONObject jsonObject) {
-        TreeMap<Integer, ArrayList<String>> menus = getMenus(jsonObject);
-        HashMap<Integer, MoveHistory> games = getMoveHistories(jsonObject);
+        TreeMap<Integer, ArrayList<String>> menus = getDisplayMenu(jsonObject);
+        HashMap<Integer, MoveHistory> games = getAllGames(jsonObject);
         GameHistory gh = new GameHistory();
         gh.set(menus, games);
         return gh;
     }
 
-    private TreeMap<Integer, ArrayList<String>> getMenus(JSONObject jsonObject) {
+    /*
+    EFFECTS: gets the displayMenu property of GameHistory
+     */
+    private TreeMap<Integer, ArrayList<String>> getDisplayMenu(JSONObject jsonObject) {
         JSONArray menus = jsonObject.getJSONArray("menus");
         TreeMap<Integer, ArrayList<String>> menu = new TreeMap<>();
         for (Object obj : menus) {
@@ -56,7 +62,10 @@ public class JsonReader {
         return menu;
     }
 
-    private HashMap<Integer, MoveHistory> getMoveHistories(JSONObject jsonObject) {
+    /*
+    EFFECTS: gets the allGames property of GameHistory
+     */
+    private HashMap<Integer, MoveHistory> getAllGames(JSONObject jsonObject) {
         HashMap<Integer, MoveHistory> map = new HashMap<>();
         JSONArray games = jsonObject.getJSONArray("games");
         for (Object obj : games) {
@@ -82,7 +91,7 @@ public class JsonReader {
     /*
     EFFECTS: returns contents of fileName as string
      */
-    private String readFile(String source) throws IOException {
+    public String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
 
         try (Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8)) {
