@@ -13,6 +13,9 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
 
+/*
+Object to load GameHistory object from JSON file.
+ */
 public class JsonReader {
 
     private String fileName;
