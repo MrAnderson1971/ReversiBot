@@ -37,10 +37,8 @@ public class JsonWriterTest {
             JsonReader reader = new JsonReader(f);
             assertEquals("{    \"games\": [],    \"menus\": []}",
                     reader.readFile(f));
-        } catch (FileNotFoundException e) {
-            fail("nope");
         } catch (IOException e) {
-            fail("also nope");
+            fail(e);
         }
     }
 
