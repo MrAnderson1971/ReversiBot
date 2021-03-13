@@ -5,6 +5,13 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 import persistence.Writeable;
 
+import javax.swing.*;
+import javax.swing.Timer;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,17 +20,28 @@ import java.util.*;
 /*
 Othello board game.
  */
-public class Othello {
+public class Othello extends JPanel implements MouseListener, ActionListener {
 
     public static final String SAVE_FILE = "./data/save.json";
+    public static final int SQUARE_DIM = 50;
+    public static final int WIDTH = 640;
+    public static final int HEIGHT = 480;
+    public static final int X_MARGIN = (WIDTH - 8 * SQUARE_DIM) / 2;
+    public static final int Y_MARGIN = (HEIGHT - 8 * SQUARE_DIM) / 2;
+
+    public static final Color BLACK = new Color(0, 0, 0);
+    public static final Color WHITE = new Color(255, 255, 255);
+    public static final Color GREEN = new Color(0, 255, 0);
 
     private Game game;
 
     private GameHistory gameHistory;
-    private Scanner scan = new Scanner(System.in);
+    private Scanner scan;
 
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
+
+    private Timer timer;
 
     // EFFECTS: runs the game
     public Othello() {
@@ -97,12 +115,26 @@ public class Othello {
             switch (input) {
                 case "D":
                     gameHistory.delete(selection);
-                    saveGameHistory(gameHistory);
+                    saveGameHistory();
                     return;
                 case "B":
                     return;
             }
         }
+    }
+
+    /*
+    EFFECTS: sets up visual component
+     */
+    private void init() {
+        setBackground(Color.blue);
+        setFocusable(true);
+        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+
+        addMouseListener(this);
+
+        timer = new Timer(140, this);
+        timer.start();
     }
 
     /*
@@ -167,7 +199,7 @@ public class Othello {
         String gameName = scan.nextLine();
 
         gameHistory.add(gameName, game.getMoveHistory(), game.getBoard().getWinner());
-        saveGameHistory(gameHistory);
+        saveGameHistory();
     }
 
     /*
@@ -291,7 +323,10 @@ public class Othello {
         return false;
     }
 
-    public void saveGameHistory(Writeable gh) {
+    /*
+    EFFECTS: saves GameHistory to file
+     */
+    public void saveGameHistory() {
         try {
             jsonWriter.open();
             jsonWriter.write(gameHistory);
@@ -301,6 +336,9 @@ public class Othello {
         }
     }
 
+    /*
+    EFFECTS: loads GameHistory from file
+     */
     public GameHistory loadGameHistory() {
         GameHistory gh = new GameHistory();
         File tempFile = new File(SAVE_FILE);
@@ -313,6 +351,66 @@ public class Othello {
             System.err.println("Could not read file.");
         }
         return gh;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        update(game.getBoard(), game.getMoveHistory());
+        repaint();
+    }
+
+    /*
+    EFFECTS: renders the game onto the screen
+     */
+    private void renderGame(Graphics g) {
+        g.setColor(Color.blue);
+        g.fillRect(0, 0, WIDTH, HEIGHT);
+        renderBoardSquares(g);
+    }
+
+    private void renderBoardSquares(Graphics g) {
+
+        // Draw light squares.
+        g.setColor(GREEN);
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                g.fillRect(x * SQUARE_DIM + X_MARGIN, y * SQUARE_DIM + Y_MARGIN, SQUARE_DIM, SQUARE_DIM);
+            }
+        }
+    }
+
+    /*
+    EFFECTS: renders everything onto the screen
+     */
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        renderGame(g);
     }
 
 }
