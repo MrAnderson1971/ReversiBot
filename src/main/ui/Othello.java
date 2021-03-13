@@ -3,8 +3,8 @@ package ui;
 import model.*;
 import persistence.JsonReader;
 import persistence.JsonWriter;
-import persistence.Writeable;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
@@ -23,11 +23,12 @@ Othello board game.
 public class Othello extends JPanel implements MouseListener, ActionListener {
 
     public static final String SAVE_FILE = "./data/save.json";
-    public static final int SQUARE_DIM = 50;
+    public static final String AUDIO_FILE = "./data/click.wav";
+    public static final int SQUARE = 50;
     public static final int WIDTH = 640;
     public static final int HEIGHT = 480;
-    public static final int X_MARGIN = (WIDTH - 8 * SQUARE_DIM) / 2;
-    public static final int Y_MARGIN = (HEIGHT - 8 * SQUARE_DIM) / 2;
+    public static final int X_MARGIN = (WIDTH - 8 * SQUARE) / 2;
+    public static final int Y_MARGIN = (HEIGHT - 8 * SQUARE) / 2;
 
     public static final Color BLACK = new Color(0, 0, 0);
     public static final Color WHITE = new Color(255, 255, 255);
@@ -36,23 +37,22 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
     private Game game;
 
     private GameHistory gameHistory;
-    private Scanner scan;
+    private Scanner scan = new Scanner(System.in);
 
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
     private Timer timer;
 
+    private int[] move;
+
     // EFFECTS: runs the game
     public Othello() {
+        init();
         jsonWriter = new JsonWriter(SAVE_FILE);
         jsonReader = new JsonReader(SAVE_FILE);
         gameHistory = loadGameHistory();
         //gameHistory = new GameHistory();
-        while (true) {
-            menu();
-            start();
-        }
     }
 
     // EFFECTS: Displays main menu
@@ -127,6 +127,9 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
     EFFECTS: sets up visual component
      */
     private void init() {
+        menu();
+        start();
+
         setBackground(Color.blue);
         setFocusable(true);
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -162,7 +165,8 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
             game = new Game(new Player(1, player1name),
                     new Player(-1, player2name));
         }
-        runGame(game);
+        //init();
+        //runGame(game);
     }
 
     /*
@@ -276,6 +280,20 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
     }
 
     /*
+    EFFECTS: play a sound from path
+     */
+    public void playSound(String path) {
+        try {
+            AudioInputStream audio = AudioSystem.getAudioInputStream(new File(path));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audio);
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /*
     MODIFIES: this, board, moveHistory
     REQUIRES: board and moveHistory from the same game
     EFFECTS: gets player / computer move, then executes move
@@ -285,29 +303,28 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
             game.setOver(true);
             return;
         }
-        try {
-            int[] move;
-            if (board.getCurrentPlayer().getAgent() == null) { // get player move
-                move = getMove(board.getPossibleMoves());
+        int[] move;
+        if (board.getCurrentPlayer().getAgent() == null) { // get player move
+            //move = getMove(board.getPossibleMoves());
+            move = this.move;
 
-            } else { // get computer move
-                //board.getCurrentPlayer().getAgent().train();
-                move = board.getCurrentPlayer().getAgent().bestMove();
-                board.getCurrentPlayer().getAgent().train();
-            }
+        } else { // get computer move
+            //board.getCurrentPlayer().getAgent().train();
+            move = board.getCurrentPlayer().getAgent().bestMove();
+            board.getCurrentPlayer().getAgent().train();
+        }
+
+        if (move != null) {
             moveHistory.add(move, board.getCurrentPlayer().toString());
             board.makeMove(move[0], move[1]);
+            this.move = null;
+        }
 
-            if (board.getCurrentPlayer().getAgent() != null) {
-                // If opponent is computer, update computer AI tree.
-                //board.getCurrentPlayer().getAgent().train();
-                board.getCurrentPlayer().getAgent().updateMove(move);
-                board.getCurrentPlayer().getAgent().train();
-            }
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println(moveHistory);
-            e.printStackTrace();
-            throw e;
+        if (board.getCurrentPlayer().getAgent() != null) {
+            // If opponent is computer, update computer AI tree.
+            //board.getCurrentPlayer().getAgent().train();
+            board.getCurrentPlayer().getAgent().updateMove(move);
+            board.getCurrentPlayer().getAgent().train();
         }
     }
 
@@ -365,7 +382,17 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        ArrayList<int[]> possibleMoves = game.getBoard().getPossibleMoves();
 
+        int x = (e.getX() - X_MARGIN) / SQUARE;
+        int y = (e.getY() - Y_MARGIN) / SQUARE;
+
+        if (0 <= x && x < 8 && 0 <= y && y < 8) {
+            if (listContainsArray(possibleMoves, new int[]{x, y})) {
+                playSound(AUDIO_FILE);
+                this.move = new int[]{x, y};
+            }
+        }
     }
 
     @Override
@@ -378,6 +405,10 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
 
     }
 
+    /*
+    MODIFIES: this
+    EFFECTS: Runs every frame
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         update(game.getBoard(), game.getMoveHistory());
@@ -387,19 +418,58 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
     /*
     EFFECTS: renders the game onto the screen
      */
-    private void renderGame(Graphics g) {
+    private void renderGame(Graphics g, Game game) {
         g.setColor(Color.blue);
         g.fillRect(0, 0, WIDTH, HEIGHT);
-        renderBoardSquares(g);
+        renderBoardSquares(g, game);
+        renderPieces(g, game);
     }
 
-    private void renderBoardSquares(Graphics g) {
+    /*
+    EFFECTS: renders the board + possible moves
+     */
+    private void renderBoardSquares(Graphics g, Game game) {
 
+        ArrayList<int[]> possibleMoves = game.getBoard().getPossibleMoves();
         // Draw light squares.
         g.setColor(GREEN);
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                g.fillRect(x * SQUARE_DIM + X_MARGIN, y * SQUARE_DIM + Y_MARGIN, SQUARE_DIM, SQUARE_DIM);
+                g.fillRect(x * SQUARE + X_MARGIN, y * SQUARE + Y_MARGIN, SQUARE, SQUARE);
+            }
+        }
+
+        // Draw possible moves
+        g.setColor(BLACK);
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if (listContainsArray(possibleMoves, new int[]{x, y})) {
+                    g.fillRect(x * SQUARE + X_MARGIN + SQUARE / 2, y * SQUARE + Y_MARGIN + SQUARE / 2, 4, 4);
+                }
+            }
+        }
+
+        // draw vertical lines
+        g.setColor(BLACK);
+        for (int x = 0; x < 8; x++) {
+            g.drawLine(x * SQUARE + X_MARGIN, Y_MARGIN, x * SQUARE + X_MARGIN, Y_MARGIN + 8 * SQUARE);
+        }
+
+        for (int y = 0; y < 8; y++) {
+            g.drawLine(X_MARGIN, y * SQUARE + Y_MARGIN, X_MARGIN + 8 * SQUARE, y * SQUARE + Y_MARGIN);
+        }
+    }
+
+    /*
+    EFFECTS: draws light and dark pieces
+     */
+    private void renderPieces(Graphics g, Game game) {
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if (game.getBoard().getPiece(x, y) != 0) {
+                    g.setColor(game.getBoard().getPiece(x, y) == 1 ? BLACK : WHITE);
+                    g.fillOval(x * SQUARE + X_MARGIN, y * SQUARE + Y_MARGIN, SQUARE, SQUARE);
+                }
             }
         }
     }
@@ -410,7 +480,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        renderGame(g);
+        renderGame(g, game);
     }
 
 }
