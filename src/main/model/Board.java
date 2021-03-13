@@ -36,13 +36,9 @@ public class Board implements Cloneable {
         return currentPlayer;
     }
 
-    /*
-    REQUIRES: x, y < 7
-    EFFECTS: true if spot at coordinates is 0
-
-    public boolean spotIsEmpty(int x, int y) {
-        return board[x][y] == 0;
-    }/*
+    public int getPiece(int x, int y) {
+        return board[x][y];
+    }
 
     /*
     REQUIRES: move be valid move
