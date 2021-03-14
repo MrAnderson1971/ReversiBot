@@ -8,10 +8,7 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,7 +17,7 @@ import java.util.*;
 /*
 Othello board game.
  */
-public class Othello extends JPanel implements MouseListener, ActionListener {
+public class Othello extends JPanel implements MouseListener, ActionListener, KeyListener {
 
     public static final String SAVE_FILE = "./data/save.json";
     public static final String AUDIO_FILE = "./data/click.wav";
@@ -41,22 +38,32 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
 
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
+    private MoveHistory replayGame;
+    private int replayGameIndex;
 
     private Timer timer;
+    private Mode mode = Mode.PLAYING;
 
     private int[] move;
 
+    private int replayIndex;
+
     // EFFECTS: runs the game
     public Othello() {
-        init();
         jsonWriter = new JsonWriter(SAVE_FILE);
         jsonReader = new JsonReader(SAVE_FILE);
         gameHistory = loadGameHistory();
+        init();
         //gameHistory = new GameHistory();
     }
 
     // EFFECTS: Displays main menu
     private void menu() {
+        System.out.println("1");
+        String[] options = new String[]{"New game", "Previous games"};
+        int selection = JOptionPane.showOptionDialog(null, "Select", "Main menu", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+        /*
         String selection = "";
 
         do {
@@ -65,6 +72,15 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
         } while (!selection.equals("p") && !selection.equals("v"));
         if (selection.equals("p")) {
             return;
+        }*/
+
+        if (selection == -1) {
+            System.exit(1);
+        }
+
+        if (selection == 0) {
+            mode = Mode.PLAYING;
+            start();
         }
         viewRecord();
     }
@@ -74,10 +90,31 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
      */
     private void viewRecord() {
         if (gameHistory.isEmpty()) {
-            System.out.println("No games played yet.");
+            JOptionPane.showMessageDialog(this, "No games played yet.");
             return;
         }
 
+        String[] options = new String[gameHistory.getDisplayMenu().size()];
+        for (int i = 0; i < gameHistory.getDisplayMenu().size(); i++) {
+            options[i] = i + ": " + gameHistory.optionToString(i);
+        }
+
+        Object selection = JOptionPane.showInputDialog(this, "Choose a game to view",
+                "Menu", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+
+        if (selection == null) {
+            menu();
+        }
+
+        for (int i = 0; i < options.length; i++) {
+            if (selection.toString().equals(options[i])) {
+                replayIndex = 0;
+                viewReplay(i);
+            }
+        }
+    }
+
+    /*
         while (true) {
             System.out.println(gameHistory);
             int selection = -1;
@@ -95,14 +132,21 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
             } while (!gameHistory.getKeyset().contains(selection));
 
             viewReplay(selection);
-        }
-    }
+        }*/
 
     /*
     EFFECTS: allows user to view a replay of a game
      */
     public void viewReplay(int selection) {
-        MoveHistory mh = gameHistory.get(selection);
+        replayGame = gameHistory.get(selection);
+        replayGameIndex = selection;
+        mode = Mode.REPLAYING;
+        game = new Game(replayGame.getPlayer1(), replayGame.getPlayer2());
+        timer.start();
+
+    }
+
+    /*
         System.out.println(mh);
         System.out.println("At any time, press B to go back, D to delete from record, or enter to continue");
         Board board = new Board(mh.getPlayer1(), mh.getPlayer2());
@@ -120,36 +164,39 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
                 case "B":
                     return;
             }
-        }
-    }
+        }*/
 
     /*
     EFFECTS: sets up visual component
      */
     private void init() {
-        menu();
-        start();
-
+        game = null;
         setBackground(Color.blue);
         setFocusable(true);
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
         addMouseListener(this);
+        addKeyListener(this);
 
         timer = new Timer(140, this);
         timer.start();
+        menu();
+        if (mode == Mode.PLAYING) {
+            start();
+        }
+
     }
 
     /*
     EFFECTS: sets up 1 or 2 player game
      */
     private void start() {
-        System.out.println("Hello Player 1. Please enter your name:");
-        String player1name = scan.nextLine();
-        System.out.println("Hello Player 2. Please enter your name:");
-        String player2name = scan.nextLine();
+        //System.out.println("Hello Player 1. Please enter your name:");
+        String player1name = JOptionPane.showInputDialog("Hello Player 1. Please enter your name:");
+        //System.out.println("Hello Player 2. Please enter your name:");
+        String player2name = JOptionPane.showInputDialog("Hello Player 2. Please enter your name:");
 
-        int numPlayers = getNumPlayers(scan);
+        int numPlayers = getNumPlayers();
 
         if (numPlayers == 1) {
 
@@ -171,8 +218,10 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
 
     /*
     EFFECTS: allows player to select difficulty of AI opponent
+        If user presses cancel/X, terminates the program.
      */
     private int getDifficulty() {
+        /*
         int difficulty = -1;
         do {
             System.out.println("Select difficulty: (1 - 10)");
@@ -182,10 +231,20 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
                 System.out.println("Please enter a valid number.");
             }
         } while (!(0 < difficulty && difficulty <= 10));
-        return difficulty;
+        return difficulty;*/
+
+        String[] options = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+        Object selection = JOptionPane.showInputDialog(this, "Select difficulty",
+                "Menu", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+        System.out.println(selection);
+        if (selection == null) {
+            System.exit(1);
+        }
+        return Integer.parseInt(selection.toString());
     }
 
     /*
+    MODIFIES: game
     EFFECTS: runs the game and collects user input
      */
     private void runGame(Game game) {
@@ -209,8 +268,10 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
     /*
     REQUIRES: Scanner object that takes input
     EFFECTS: returns # of human players playing
+    If user presses cancel/X, terminates the program.
      */
-    private int getNumPlayers(Scanner scan) {
+    private int getNumPlayers() {
+        /*
         int numPlayers = -1;
         do {
             System.out.println("One player or two players?");
@@ -220,7 +281,16 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
                 System.out.println("Please enter a valid number.");
             }
         } while (numPlayers != 1 && numPlayers != 2);
-        return numPlayers;
+        return numPlayers;*/
+
+        String[] options = {"1", "2"};
+        Object selectionObject = JOptionPane.showInputDialog(this, "Select number of players",
+                "Menu", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+        if (selectionObject == null) {
+            System.exit(1);
+        }
+        mode = Mode.PLAYING;
+        return Integer.parseInt(selectionObject.toString());
     }
 
     /*
@@ -348,6 +418,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
             jsonWriter.open();
             jsonWriter.write(gameHistory);
             jsonWriter.close();
+            JOptionPane.showMessageDialog(this, "Game saved.");
         } catch (FileNotFoundException e) {
             System.err.println("Error in writing to save file.");
         }
@@ -364,6 +435,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
         }
         try {
             gh = (GameHistory) jsonReader.load();
+            JOptionPane.showMessageDialog(this, "Successfully loaded record from memory.");
         } catch (IOException e) {
             System.err.println("Could not read file.");
         }
@@ -380,17 +452,23 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
 
     }
 
+    /*
+    MODIFIES: this
+    EFFECTS: handles mouse input
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
-        ArrayList<int[]> possibleMoves = game.getBoard().getPossibleMoves();
+        if (mode == Mode.PLAYING) {
+            ArrayList<int[]> possibleMoves = game.getBoard().getPossibleMoves();
 
-        int x = (e.getX() - X_MARGIN) / SQUARE;
-        int y = (e.getY() - Y_MARGIN) / SQUARE;
+            int x = (e.getX() - X_MARGIN) / SQUARE;
+            int y = (e.getY() - Y_MARGIN) / SQUARE;
 
-        if (0 <= x && x < 8 && 0 <= y && y < 8) {
-            if (listContainsArray(possibleMoves, new int[]{x, y})) {
-                playSound(AUDIO_FILE);
-                this.move = new int[]{x, y};
+            if (0 <= x && x < 8 && 0 <= y && y < 8) {
+                if (listContainsArray(possibleMoves, new int[]{x, y})) {
+                    playSound(AUDIO_FILE);
+                    this.move = new int[]{x, y};
+                }
             }
         }
     }
@@ -411,21 +489,40 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        update(game.getBoard(), game.getMoveHistory());
-        repaint();
+
+        if (game != null) {
+            repaint();
+            update(game.getBoard(), game.getMoveHistory());
+
+            if (game.isOver()) {
+                String gameName = JOptionPane.showInputDialog(this, game.getBoard().getWinner() + " won!"
+                        + "\nEnter a name for this game:");
+                gameHistory.add(gameName, game.getMoveHistory(), game.getBoard().getWinner());
+                saveGameHistory();
+                timer.stop();
+                init();
+            }
+        }
     }
 
     /*
+    MODIFIES: g
     EFFECTS: renders the game onto the screen
      */
     private void renderGame(Graphics g, Game game) {
         g.setColor(Color.blue);
         g.fillRect(0, 0, WIDTH, HEIGHT);
+        g.setColor(BLACK);
+        g.drawString(game.getBoard().getCurrentPlayer() + "'s turn", 0, 36);
+        if (mode == Mode.REPLAYING) {
+            g.drawString("Press enter to continue, backspace to return to menu, del to delete replay", 0, HEIGHT - 12);
+        }
         renderBoardSquares(g, game);
         renderPieces(g, game);
     }
 
     /*
+    MODIFIES: g
     EFFECTS: renders the board + possible moves
      */
     private void renderBoardSquares(Graphics g, Game game) {
@@ -461,6 +558,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
     }
 
     /*
+    MODIFIES: g
     EFFECTS: draws light and dark pieces
      */
     private void renderPieces(Graphics g, Game game) {
@@ -475,6 +573,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
     }
 
     /*
+    MODIFIES: g
     EFFECTS: renders everything onto the screen
      */
     @Override
@@ -483,4 +582,41 @@ public class Othello extends JPanel implements MouseListener, ActionListener {
         renderGame(g, game);
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    /*
+    MODIFIES: this
+    EFFECTS: handles keyboard input
+     */
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (mode == Mode.REPLAYING) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_ENTER:
+                    int[] m = replayGame.getMoves().get(replayIndex);
+                    game.getBoard().makeMove(m[0], m[1]);
+                    replayIndex++;
+                    break;
+                case KeyEvent.VK_BACK_SPACE:
+                    viewRecord();
+                    break;
+                case KeyEvent.VK_DELETE:
+                    if (1 == JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this?")) {
+                        gameHistory.delete(replayGameIndex);
+                        viewRecord();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 }
