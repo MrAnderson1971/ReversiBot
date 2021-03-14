@@ -34,8 +34,7 @@ public class GameHistoryTest {
 
     @Test
     void testGet() {
-        assertNull(empty.get(0));
-        assertEquals(mh1, gh.get(1));
+        assertEquals(mh1, gh.get(0));
     }
 
     @Test
@@ -48,27 +47,31 @@ public class GameHistoryTest {
     @Test
     void testDelete() {
         assertEquals(1, gh.getDisplayMenu().size());
-        assertTrue(gh.delete(1));
+        assertTrue(gh.delete(0));
         assertEquals(0, gh.getDisplayMenu().size());
         gh.add("test", mh2, new Player(-1, null));
         assertEquals(1, gh.getDisplayMenu().size());
-        assertFalse(gh.getDisplayMenu().contains(1));
         assertFalse(gh.delete(1));
-        assertTrue(gh.delete(2));
-        assertEquals(0, gh.getDisplayMenu().size());
+        assertFalse(gh.delete(2));
+        //assertEquals(0, gh.getDisplayMenu().size());
     }
 
     @Test
     void testToString() {
         assertEquals("", empty.toString());
-        assertEquals("1. Infinity War | Manos won\n", gh.toString());
+        assertEquals("0. Infinity War | Manos won\n", gh.toString());
         gh.add("test", mh2, new Player(-1, null));
-        assertEquals("1. Infinity War | Manos won\n2. test | null won\n", gh.toString());
+        assertEquals("0. Infinity War | Manos won\n1. test | null won\n", gh.toString());
     }
 
     @Test
     void testMax() {
         ArrayList<Integer> a = new ArrayList<>(Arrays.asList(1, 6, 2, 4, 6, 3, 7, 7, 333, 6));
         assertEquals(333, GameHistory.max(a));
+    }
+
+    @Test
+    void testOptionToString() {
+        assertEquals("Infinity War | Manos", gh.optionToString(0));
     }
 }

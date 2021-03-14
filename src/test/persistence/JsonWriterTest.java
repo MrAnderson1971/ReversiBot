@@ -72,7 +72,7 @@ public class JsonWriterTest {
                     "5. Player 1 made the move F5\n" +
                     "6. Player 2 made the move G6\n" +
                     "7. Player 1 made the move H2\n" +
-                    "8. Player 2 made the move A0\n", gh2.get(1).toString());
+                    "8. Player 2 made the move A0\n", gh2.get(0).toString());
         } catch (IOException e) {
             fail(e);
         }
