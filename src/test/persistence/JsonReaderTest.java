@@ -53,7 +53,6 @@ public class JsonReaderTest {
         try {
             GameHistory gh = (GameHistory) reader.load();
             assertEquals(0, gh.getDisplayMenu().size());
-            assertNull(gh.get(0));
         } catch (IOException e) {
             fail("Error in file.");
         }
@@ -66,10 +65,10 @@ public class JsonReaderTest {
             JsonReader reader = new JsonReader(f);
             GameHistory gh = (GameHistory) reader.load();
             assertEquals(2, gh.getDisplayMenu().size());
-            assertEquals("1. Wimpy War | Manos won\n" +
-                    "2. Detroit: Become Skynet | RK800 won\n", gh.toString());
-            assertEquals(expected1, gh.get(1).toString());
-            assertEquals(expected2, gh.get(2).toString());
+            assertEquals("0. Wimpy War | Manos won\n" +
+                    "1. Detroit: Become Skynet | RK800 won\n", gh.toString());
+            assertEquals(expected1, gh.get(0).toString());
+            assertEquals(expected2, gh.get(1).toString());
         } catch (IOException e) {
             fail(e);
         }
