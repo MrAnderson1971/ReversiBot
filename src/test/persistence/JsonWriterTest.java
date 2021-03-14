@@ -1,12 +1,10 @@
 package persistence;
 
-import jdk.nashorn.internal.ir.debug.JSONWriter;
 import model.GameHistory;
 import model.MoveHistory;
 import model.Player;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -66,7 +64,7 @@ public class JsonWriterTest {
 
             JsonReader reader = new JsonReader(f);
             GameHistory gh2 = (GameHistory) reader.load();
-            assertEquals(1, gh2.getKeyset().size());
+            assertEquals(1, gh2.getDisplayMenu().size());
             assertEquals("1. Player 1 made the move B1\n" +
                     "2. Player 2 made the move C2\n" +
                     "3. Player 1 made the move D4\n" +

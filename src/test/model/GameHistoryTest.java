@@ -40,22 +40,22 @@ public class GameHistoryTest {
 
     @Test
     void testAdd() {
-        assertEquals(1, gh.getKeyset().size());
+        assertEquals(1, gh.getDisplayMenu().size());
         gh.add("test", mh2, new Player(-1, null));
-        assertEquals(2, gh.getKeyset().size());
+        assertEquals(2, gh.getDisplayMenu().size());
     }
 
     @Test
     void testDelete() {
-        assertEquals(1, gh.getKeyset().size());
+        assertEquals(1, gh.getDisplayMenu().size());
         assertTrue(gh.delete(1));
-        assertEquals(0, gh.getKeyset().size());
+        assertEquals(0, gh.getDisplayMenu().size());
         gh.add("test", mh2, new Player(-1, null));
-        assertEquals(1, gh.getKeyset().size());
-        assertFalse(gh.getKeyset().contains(1));
+        assertEquals(1, gh.getDisplayMenu().size());
+        assertFalse(gh.getDisplayMenu().contains(1));
         assertFalse(gh.delete(1));
         assertTrue(gh.delete(2));
-        assertEquals(0, gh.getKeyset().size());
+        assertEquals(0, gh.getDisplayMenu().size());
     }
 
     @Test

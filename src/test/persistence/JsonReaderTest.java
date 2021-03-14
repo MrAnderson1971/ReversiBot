@@ -1,14 +1,12 @@
 package persistence;
 
 import model.GameHistory;
-import model.MoveHistory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.security.KeyException;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,7 +52,7 @@ public class JsonReaderTest {
         JsonReader reader = new JsonReader("./data/emptySave.json");
         try {
             GameHistory gh = (GameHistory) reader.load();
-            assertEquals(0, gh.getKeyset().size());
+            assertEquals(0, gh.getDisplayMenu().size());
             assertNull(gh.get(0));
         } catch (IOException e) {
             fail("Error in file.");
@@ -67,7 +65,7 @@ public class JsonReaderTest {
         try {
             JsonReader reader = new JsonReader(f);
             GameHistory gh = (GameHistory) reader.load();
-            assertEquals(2, gh.getKeyset().size());
+            assertEquals(2, gh.getDisplayMenu().size());
             assertEquals("1. Wimpy War | Manos won\n" +
                     "2. Detroit: Become Skynet | RK800 won\n", gh.toString());
             assertEquals(expected1, gh.get(1).toString());

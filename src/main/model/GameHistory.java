@@ -13,10 +13,10 @@ public class GameHistory implements Writeable {
 
     // Maps a number to game name for display in menus
     // TreeMap because I need them to print in order
-    private TreeMap<Integer, ArrayList<String>> displayMenu;
+    private List<ArrayList<String>> displayMenu;
 
     // Maps same number to moveHistory for fetching
-    private HashMap<Integer, MoveHistory> allGames;
+    private List<MoveHistory> allGames;
 
     private int currentNumber;
 
@@ -25,8 +25,8 @@ public class GameHistory implements Writeable {
     Only needs to be instantiated once.
      */
     public GameHistory() {
-        displayMenu = new TreeMap<>();
-        allGames = new HashMap<>();
+        displayMenu = new ArrayList<>();
+        allGames = new ArrayList<>();
         currentNumber = 1;
     }
 
@@ -35,15 +35,13 @@ public class GameHistory implements Writeable {
     EFFECTS: adds a game to the record, increments id for next game
      */
     public void add(String name, MoveHistory game, Player winner) {
-        displayMenu.put(currentNumber, new ArrayList<>(Arrays.asList(name, "" + winner)));
-        allGames.put(currentNumber, game);
-        currentNumber++;
+        displayMenu.add(new ArrayList<>(Arrays.asList(name, "" + winner)));
+        allGames.add(game);
     }
 
-    public void set(TreeMap<Integer, ArrayList<String>> displayMenu, HashMap<Integer, MoveHistory> allGames) {
+    public void set(List<ArrayList<String>> displayMenu, List<MoveHistory> allGames) {
         this.displayMenu = displayMenu;
         this.allGames = allGames;
-        currentNumber = max(this.displayMenu.keySet()) + 1;
     }
 
     /*
@@ -61,11 +59,8 @@ public class GameHistory implements Writeable {
         return displayMenu.isEmpty();
     }
 
-    /*
-    EFFECTS: returns a list of all keys in displayMenu
-     */
-    public Set<Integer> getKeyset() {
-        return displayMenu.keySet();
+    public List<ArrayList<String>> getDisplayMenu() {
+        return displayMenu;
     }
 
     /*
@@ -74,7 +69,7 @@ public class GameHistory implements Writeable {
     Returns true if successful, else returns false.
      */
     public boolean delete(int selection) {
-        if (displayMenu.containsKey(selection)) {
+        if (selection < displayMenu.size()) {
             displayMenu.remove(selection);
             allGames.remove(selection);
             return true;
@@ -88,7 +83,7 @@ public class GameHistory implements Writeable {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        for (int i : displayMenu.keySet()) {
+        for (int i = 0; i < displayMenu.size(); i++) {
             s.append(i).append(". ").append(displayMenu.get(i).get(0));
             s.append(" | ").append(displayMenu.get(i).get(1)).append(" won").append("\n");
         }
@@ -101,19 +96,18 @@ public class GameHistory implements Writeable {
         JSONArray gamesArray = new JSONArray();
         JSONArray menusArray = new JSONArray();
 
-        for (int mh : allGames.keySet()) {
+        for (MoveHistory mh : allGames) {
             JSONObject obj = new JSONObject();
-            obj.put("id", mh);
-            obj.put("game", allGames.get(mh).toJson());
+            obj.put("game", mh.toJson());
             gamesArray.put(obj);
         }
 
-        for (int mh : displayMenu.keySet()) {
+        for (ArrayList<String> mh : displayMenu) {
             JSONArray a = new JSONArray();
             JSONObject obj = new JSONObject();
-            obj.put("id", mh);
-            obj.put("name", displayMenu.get(mh).get(0));
-            obj.put("winner", displayMenu.get(mh).get(1));
+            //obj.put("id", mh);
+            obj.put("name", mh.get(0));
+            obj.put("winner", mh.get(1));
             a.put(obj);
             menusArray.put(obj);
         }
@@ -134,6 +128,14 @@ public class GameHistory implements Writeable {
             }
         }
         return max;
+    }
+
+    /*
+    REQUIRES: index is a valid key
+    EFFECTS: returns string representation of option
+     */
+    public String optionToString(int index) {
+        return displayMenu.get(index).get(0) + " | " + displayMenu.get(index).get(1);
     }
 
 }

@@ -40,8 +40,8 @@ public class JsonReader {
     EFFECTS: loads GameHistory object from file.
      */
     private GameHistory loadObject(JSONObject jsonObject) {
-        TreeMap<Integer, ArrayList<String>> menus = getDisplayMenu(jsonObject);
-        HashMap<Integer, MoveHistory> games = getAllGames(jsonObject);
+        List<ArrayList<String>> menus = getDisplayMenu(jsonObject);
+        List<MoveHistory> games = getAllGames(jsonObject);
         GameHistory gh = new GameHistory();
         gh.set(menus, games);
         return gh;
@@ -50,16 +50,16 @@ public class JsonReader {
     /*
     EFFECTS: gets the displayMenu property of GameHistory
      */
-    private TreeMap<Integer, ArrayList<String>> getDisplayMenu(JSONObject jsonObject) {
+    private List<ArrayList<String>> getDisplayMenu(JSONObject jsonObject) {
         JSONArray menus = jsonObject.getJSONArray("menus");
-        TreeMap<Integer, ArrayList<String>> menu = new TreeMap<>();
+        List<ArrayList<String>> menu = new ArrayList<>();
         for (Object obj : menus) {
             JSONObject json = (JSONObject) obj;
-            int index = json.getInt("id");
+            //int index = json.getInt("id");
             String gameName = json.getString("name");
             String winner = json.getString("winner");
 
-            menu.put(index, new ArrayList<String>(Arrays.asList(gameName, winner)));
+            menu.add(new ArrayList<String>(Arrays.asList(gameName, winner)));
         }
 
         return menu;
@@ -68,12 +68,12 @@ public class JsonReader {
     /*
     EFFECTS: gets the allGames property of GameHistory
      */
-    private HashMap<Integer, MoveHistory> getAllGames(JSONObject jsonObject) {
-        HashMap<Integer, MoveHistory> map = new HashMap<>();
+    private List<MoveHistory> getAllGames(JSONObject jsonObject) {
+        List<MoveHistory> map = new ArrayList<>();
         JSONArray games = jsonObject.getJSONArray("games");
         for (Object obj : games) {
             JSONObject json = (JSONObject) obj;
-            int id = json.getInt("id");
+            //int id = json.getInt("id");
             JSONObject game = json.getJSONObject("game");
             ArrayList<String> names = new ArrayList<>();
             for (Object j : game.getJSONArray("names")) {
@@ -86,7 +86,7 @@ public class JsonReader {
             }
             MoveHistory m = new MoveHistory(new Player(1, names.get(0)), new Player(-1, names.get(1)));
             m.set(names, moves);
-            map.put(id, m);
+            map.add(m);
         }
         return map;
     }
