@@ -158,4 +158,9 @@ class BoardTest {
         assertEquals(48, Board.countObjects(array, 0));
     }
 
+    @Test
+    void testGetPiece() {
+        assertEquals(0, defaultBoard.getPiece(0, 0));
+    }
+
 }
