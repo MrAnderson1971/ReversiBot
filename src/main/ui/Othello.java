@@ -63,7 +63,23 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
         String[] options = new String[]{"New game", "Previous games"};
         int selection = JOptionPane.showOptionDialog(null, "Select", "Main menu", JOptionPane.DEFAULT_OPTION,
                 JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-        /*
+
+        switch (selection) {
+            case -1:
+                System.exit(1);
+            case 0:
+                mode = Mode.PLAYING;
+                start();
+                break;
+            case 1:
+                viewRecord();
+                break;
+            default:
+                break;
+        }
+    }
+
+            /*
         String selection = "";
 
         do {
@@ -74,16 +90,6 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
             return;
         }*/
 
-        if (selection == -1) {
-            System.exit(1);
-        }
-
-        if (selection == 0) {
-            mode = Mode.PLAYING;
-            start();
-        }
-        viewRecord();
-    }
 
     /*
     EFFECTS: Displays record of past games
@@ -91,6 +97,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
     private void viewRecord() {
         if (gameHistory.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No games played yet.");
+            menu();
             return;
         }
 
@@ -104,6 +111,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
 
         if (selection == null) {
             menu();
+            return;
         }
 
         for (int i = 0; i < options.length; i++) {
@@ -182,7 +190,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
         timer.start();
         menu();
         if (mode == Mode.PLAYING) {
-            start();
+            //start();
         }
 
     }
@@ -191,6 +199,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
     EFFECTS: sets up 1 or 2 player game
      */
     private void start() {
+        mode = Mode.PLAYING;
         //System.out.println("Hello Player 1. Please enter your name:");
         String player1name = JOptionPane.showInputDialog("Hello Player 1. Please enter your name:");
         //System.out.println("Hello Player 2. Please enter your name:");
@@ -289,7 +298,6 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
         if (selectionObject == null) {
             System.exit(1);
         }
-        mode = Mode.PLAYING;
         return Integer.parseInt(selectionObject.toString());
     }
 
@@ -497,6 +505,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
             if (game.isOver()) {
                 String gameName = JOptionPane.showInputDialog(this, game.getBoard().getWinner() + " won!"
                         + "\nEnter a name for this game:");
+                System.out.println(game.getMoveHistory());
                 gameHistory.add(gameName, game.getMoveHistory(), game.getBoard().getWinner());
                 saveGameHistory();
                 timer.stop();
@@ -601,6 +610,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
         if (mode == Mode.REPLAYING) {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_ENTER:
+                    playSound(AUDIO_FILE);
                     int[] m = replayGame.getMoves().get(replayIndex);
                     game.getBoard().makeMove(m[0], m[1]);
                     replayIndex++;
@@ -609,8 +619,9 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
                     viewRecord();
                     break;
                 case KeyEvent.VK_DELETE:
-                    if (1 == JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this?")) {
+                    if (0 == JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this?")) {
                         gameHistory.delete(replayGameIndex);
+                        saveGameHistory();
                         viewRecord();
                     }
                     break;
