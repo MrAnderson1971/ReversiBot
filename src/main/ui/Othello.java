@@ -152,6 +152,9 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
         game = new Game(replayGame.getPlayer1(), replayGame.getPlayer2());
         timer.start();
 
+        if (replayGameIndex >= replayGame.getMoves().size()) {
+            menu();
+        }
     }
 
     /*
@@ -503,11 +506,15 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
             update(game.getBoard(), game.getMoveHistory());
 
             if (game.isOver()) {
-                String gameName = JOptionPane.showInputDialog(this, game.getBoard().getWinner() + " won!"
-                        + "\nEnter a name for this game:");
-                System.out.println(game.getMoveHistory());
-                gameHistory.add(gameName, game.getMoveHistory(), game.getBoard().getWinner());
-                saveGameHistory();
+                if (mode == Mode.PLAYING) {
+                    String gameName = JOptionPane.showInputDialog(this, game.getBoard().getWinner() + " won!"
+                            + "\nEnter a name for this game:");
+                    System.out.println(game.getMoveHistory());
+                    gameHistory.add(gameName, game.getMoveHistory(), game.getBoard().getWinner());
+                    saveGameHistory();
+                } else {
+                    JOptionPane.showMessageDialog(this, game.getBoard().getWinner() + " won!");
+                }
                 timer.stop();
                 init();
             }
