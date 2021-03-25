@@ -5,6 +5,10 @@ import java.awt.*;
 
 public class Main extends JFrame {
 
+    /*
+    MODIFIES: this
+    EFFECTS: starts the game
+     */
     public Main() {
         init();
     }
@@ -16,6 +20,10 @@ public class Main extends JFrame {
         });
     }
 
+    /*
+MODIFIES: this
+EFFECTS: starts the game
+ */
     public void init() {
         add(new Othello());
 

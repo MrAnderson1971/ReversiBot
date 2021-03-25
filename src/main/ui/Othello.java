@@ -92,9 +92,13 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
 
 
     /*
+    MODIFIES: this
     EFFECTS: Displays record of past games
      */
     private void viewRecord() {
+        replayGameIndex = 0;
+        replayGame = null;
+
         if (gameHistory.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No games played yet.");
             menu();
@@ -153,6 +157,8 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
         timer.start();
 
         if (replayGameIndex >= replayGame.getMoves().size()) {
+            replayGame = null;
+            replayGameIndex = 0;
             menu();
         }
     }
