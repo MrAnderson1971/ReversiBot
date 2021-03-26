@@ -90,6 +90,9 @@ public class GameHistory implements Writeable {
         return s.toString();
     }
 
+    /*
+    EFFECTS: returns JSON representation of object
+     */
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
