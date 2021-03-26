@@ -61,6 +61,9 @@ public class Player implements Cloneable {
         return this.piece == p.piece;
     }
 
+    /*
+    EFFECTS: returns copy of this
+     */
     public Player clone() {
         return new Player(piece, name);
     }

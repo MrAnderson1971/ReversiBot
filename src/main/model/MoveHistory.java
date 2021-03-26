@@ -126,6 +126,9 @@ public class MoveHistory implements Writeable {
         return s.toString();
     }
 
+    /*
+    EFFECTS: returns JSON representation of this
+     */
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

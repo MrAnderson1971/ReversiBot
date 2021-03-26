@@ -459,11 +459,19 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
         return gh;
     }
 
+    /*
+    stub method for interface
+    EFFECTS: none
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
 
     }
 
+    /*
+    stub method for interface
+    EFFECTS: none
+    */
     @Override
     public void mousePressed(MouseEvent e) {
 
@@ -490,11 +498,19 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
         }
     }
 
+    /*
+stub method for interface
+EFFECTS: none
+*/
     @Override
     public void mouseEntered(MouseEvent e) {
 
     }
 
+    /*
+stub method for interface
+EFFECTS: none
+*/
     @Override
     public void mouseExited(MouseEvent e) {
 
@@ -604,11 +620,19 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
         renderGame(g, game);
     }
 
+    /*
+    stub method for interface
+    EFFECTS: none
+    */
     @Override
     public void keyTyped(KeyEvent e) {
 
     }
 
+    /*
+    stub method for interface
+    EFFECTS: none
+    */
     @Override
     public void keyPressed(KeyEvent e) {
 
