@@ -53,6 +53,14 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
         jsonWriter = new JsonWriter(SAVE_FILE);
         jsonReader = new JsonReader(SAVE_FILE);
         gameHistory = loadGameHistory();
+        setBackground(Color.blue);
+        setFocusable(true);
+        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+
+        addMouseListener(this);
+        addKeyListener(this);
+
+        timer = new Timer(140, this);
         init();
         //gameHistory = new GameHistory();
     }
@@ -188,14 +196,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
      */
     private void init() {
         game = null;
-        setBackground(Color.blue);
-        setFocusable(true);
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
-        addMouseListener(this);
-        addKeyListener(this);
-
-        timer = new Timer(140, this);
         timer.start();
         menu();
         if (mode == Mode.PLAYING) {
