@@ -48,6 +48,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
 
     private int replayIndex;
 
+    // MODIFIES: this
     // EFFECTS: runs the game
     public Othello() {
         jsonWriter = new JsonWriter(SAVE_FILE);
@@ -65,6 +66,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
         //gameHistory = new GameHistory();
     }
 
+    // MODIFIES: this
     // EFFECTS: Displays main menu
     private void menu() {
         System.out.println("1");
@@ -192,6 +194,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
         }*/
 
     /*
+    MODIFIES: this
     EFFECTS: sets up visual component
      */
     private void init() {
@@ -206,6 +209,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
     }
 
     /*
+    MODIFIES: this
     EFFECTS: sets up 1 or 2 player game
      */
     private void start() {
