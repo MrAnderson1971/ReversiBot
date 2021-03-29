@@ -419,7 +419,7 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
             try {
                 board.getCurrentPlayer().getAgent().updateMove(move);
             } catch (NodeNotFoundException e) {
-                e.printStackTrace();
+                // oops
             }
             board.getCurrentPlayer().getAgent().train();
         }
