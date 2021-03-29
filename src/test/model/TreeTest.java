@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.NodeNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -83,16 +84,28 @@ public class TreeTest {
         for (Node child : level1Tree.getCurrentMove().getChildren()) {
             System.out.println(Arrays.toString(child.getMove()));
         }
-        level10Tree.updateMove(new int[]{2, 3});
-        assertEquals(Arrays.toString(new int[]{2, 3}), Arrays.toString(level10Tree.getCurrentMove().getMove()));
+        try {
+            level10Tree.updateMove(new int[]{2, 3});
+            assertEquals(Arrays.toString(new int[]{2, 3}), Arrays.toString(level10Tree.getCurrentMove().getMove()));
 
-        level1Tree.updateMove(new int[]{3, 2});
-        assertEquals(Arrays.toString(new int[]{3, 2}), Arrays.toString(level1Tree.getCurrentMove().getMove()));
+        } catch (NodeNotFoundException e) {
+            fail("unexpected");
+        }
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        try {
+            level1Tree.updateMove(new int[]{3, 2});
+            assertEquals(Arrays.toString(new int[]{3, 2}), Arrays.toString(level1Tree.getCurrentMove().getMove()));
+
+        } catch (NodeNotFoundException e) {
+            fail("unexpected");
+        }
+
+        try {
             level10Tree.updateMove(new int[]{0, 0});
-        });
-
+            fail("unexpected");
+        } catch (NodeNotFoundException e) {
+            // expected
+        }
         //assertEquals("Node not found.", e.getMessage());
     }
 

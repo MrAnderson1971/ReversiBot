@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.NodeNotFoundException;
 import model.*;
 import persistence.JsonReader;
 import persistence.JsonWriter;
@@ -415,7 +416,11 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
         if (board.getCurrentPlayer().getAgent() != null) {
             // If opponent is computer, update computer AI tree.
             //board.getCurrentPlayer().getAgent().train();
-            board.getCurrentPlayer().getAgent().updateMove(move);
+            try {
+                board.getCurrentPlayer().getAgent().updateMove(move);
+            } catch (NodeNotFoundException e) {
+                e.printStackTrace();
+            }
             board.getCurrentPlayer().getAgent().train();
         }
     }
