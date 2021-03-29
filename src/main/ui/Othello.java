@@ -535,7 +535,7 @@ EFFECTS: none
             if (game.isOver()) {
                 if (mode == Mode.PLAYING) {
                     String gameName = JOptionPane.showInputDialog(this, game.getBoard().getWinner() + " won!"
-                            + "\nEnter a name for this game:");
+                            + "\nEnter a name for this game:") + "";
                     System.out.println(game.getMoveHistory());
                     gameHistory.add(gameName, game.getMoveHistory(), game.getBoard().getWinner());
                     saveGameHistory();
