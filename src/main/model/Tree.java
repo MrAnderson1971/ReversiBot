@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.NodeNotFoundException;
+
 import java.util.*;
 
 /*
@@ -137,16 +139,16 @@ public class Tree {
     REQUIRES: move is a valid move
     MODIFIES: this
     EFFECTS: updates tree so that current move is the move that was just made
-        if no corresponding node found, throws an exception
+        if no corresponding node found, throws NodeNotFoundException
      */
-    public void updateMove(int[] move) {
+    public void updateMove(int[] move) throws NodeNotFoundException {
         for (Node child : currentMove.getChildren()) {
             if (Arrays.equals(child.getMove(), move)) {
                 currentMove = child;
                 return;
             }
         }
-        throw new IllegalArgumentException("Node not found.");
+        throw new NodeNotFoundException("Node not found.");
     }
 }
 //

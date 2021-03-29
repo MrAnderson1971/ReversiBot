@@ -30,3 +30,8 @@ tree search algorithm that can play the game proficiently.
 - As a user, I want to be able to autoload the game history record from a file.
 
 Sound effect from: https://www.youtube.com/watch?v=h8y0JMVwdmM
+
+Phase 4: Task 2
+
+Tree.updateMove() throws NodeNotFoundException to make it robust
+tests in TreeTest.java
