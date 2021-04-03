@@ -31,7 +31,10 @@ tree search algorithm that can play the game proficiently.
 
 Sound effect from: https://www.youtube.com/watch?v=h8y0JMVwdmM
 
-Phase 4: Task 2
+#### Phase 4: Task 2
 
 Tree.updateMove() throws NodeNotFoundException to make it robust
 tests in TreeTest.java
+
+#### Phase 4: Task 3
+There is a lot of refactoring that can be done, especially with the base "Othello.java" class. For example, the connection between Othello.java and MoveHistory can be removed, instead, Othello.java can call Game.java's "getMoveHistory()". The link between Game.java and Player.java can also be removed without any more shuffling of code.
