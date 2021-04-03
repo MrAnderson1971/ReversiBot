@@ -38,3 +38,4 @@ tests in TreeTest.java
 
 #### Phase 4: Task 3
 There is a lot of refactoring that can be done, especially with the base "Othello.java" class. For example, the connection between Othello.java and MoveHistory can be removed, instead, Othello.java can call Game.java's "getMoveHistory()". The link between Game.java and Player.java can also be removed without any more shuffling of code.
+In GameHistory.java, there are two Lists: one for the menu items, and one containing the actual replays. The menu list can be removed, because all the data inside it is already contained in the replays list.
