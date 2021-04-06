@@ -18,7 +18,6 @@ public class Tree {
     private Node currentMove;
 
     /*
-    REQUIRES: depth positive integer, and not too big
     EFFECTS: creates new MCTS search tree
      */
     public Tree(int depth, Board board) {
@@ -66,7 +65,6 @@ public class Tree {
     }
 
     /*
-    REQUIRES: leaf should be a leaf node (without children)
     MODIFIES: this, leaf
     EFFECTS: add every possible next move as child to leaf
         if one of the nodes wins the game, return the winner
@@ -136,7 +134,6 @@ public class Tree {
     }
 
     /*
-    REQUIRES: move is a valid move
     MODIFIES: this
     EFFECTS: updates tree so that current move is the move that was just made
         if no corresponding node found, throws NodeNotFoundException
