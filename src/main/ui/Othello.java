@@ -216,9 +216,9 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
     private void start() {
         mode = Mode.PLAYING;
         //System.out.println("Hello Player 1. Please enter your name:");
-        String player1name = JOptionPane.showInputDialog("Hello Player 1. Please enter your name:");
+        String player1name = JOptionPane.showInputDialog("Hello Player 1. Please enter your name:") + "";
         //System.out.println("Hello Player 2. Please enter your name:");
-        String player2name = JOptionPane.showInputDialog("Hello Player 2. Please enter your name:");
+        String player2name = JOptionPane.showInputDialog("Hello Player 2. Please enter your name:") + "";
 
         int numPlayers = getNumPlayers();
 
