@@ -97,12 +97,12 @@ public class TreeTest {
             assertEquals(Arrays.toString(new int[]{3, 2}), Arrays.toString(level1Tree.getCurrentMove().getMove()));
 
         } catch (NodeNotFoundException e) {
-            fail("unexpected");
+            fail("Did not expect an exception");
         }
 
         try {
             level10Tree.updateMove(new int[]{0, 0});
-            fail("unexpected");
+            fail("Expected an exception.");
         } catch (NodeNotFoundException e) {
             // expected
         }
