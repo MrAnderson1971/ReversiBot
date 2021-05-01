@@ -1,3 +1,10 @@
+
+
+https://user-images.githubusercontent.com/67478505/116764825-3a883580-a9d7-11eb-8831-4f6607676685.mp4
+
+
+
+
 # Reversi
 
 ## Board game + bot 
