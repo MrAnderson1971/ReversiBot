@@ -1,3 +1,4 @@
 *.class
 workspace.xml
 notes.txt
+.idea/
