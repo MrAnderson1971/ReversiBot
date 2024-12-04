@@ -4,7 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writeable;
 
-import java.util.*;
+import java.util.ArrayList;
 
 /*
 Keeps track of all moves made in a game so far.

@@ -3,7 +3,9 @@ package persistence;
 
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 /*
 Object to write GameHistory object to JSON file.

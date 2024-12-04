@@ -1,9 +1,5 @@
 package model;
 
-import ui.Othello;
-
-import java.util.Arrays;
-
 /*
 Represents one game
  */
