@@ -42,6 +42,11 @@ public class GameHistory implements Writeable {
         allGames.add(game);
     }
 
+    public void add(String name, MoveHistory game) {
+        displayMenu.add(new ArrayList<>(Arrays.asList(name, "Draw")));
+        allGames.add(game);
+    }
+
     public void set(List<ArrayList<String>> displayMenu, List<MoveHistory> allGames) {
         this.displayMenu = displayMenu;
         this.allGames = allGames;

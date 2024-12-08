@@ -4,6 +4,7 @@ import exceptions.NodeNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Random;
 
 /*
@@ -45,8 +46,8 @@ public class Tree {
         double searchTimes = Math.pow(2, depth);
         for (int i = 0; i < searchTimes; i++) {
             selection();
-            Player winner = expansion();
-            if (winner == null) {
+            Optional<Player> winner = expansion();
+            if (!winner.isPresent()) {
                 winner = simulation();
             }
             backpropagation(winner);
@@ -72,7 +73,7 @@ public class Tree {
         if one of the nodes wins the game, return the winner
         else return null if no winner yet
      */
-    private Player expansion() {
+    private Optional<Player> expansion() {
         Board b = leaf.getBoard();
         ArrayList<Node> children = new ArrayList<>();
         ArrayList<int[]> possibleMoves = b.getPossibleMoves();
@@ -82,18 +83,18 @@ public class Tree {
             Node newNode = new Node(copyOfBoard, move, copyOfBoard.getCurrentPlayer());
             children.add(newNode);
         }
-        if (children.size() == 0) { // no possible moves found; game over
+        if (children.isEmpty()) { // no possible moves found; game over
             return leaf.getBoard().getWinner();
         }
         leaf.addChildren(children);
         leaf = leaf.randomChild();
-        return null;
+        return Optional.empty();
     }
 
     /*
     EFFECTS: returns which player won as a result of making moves at random
      */
-    private Player simulation() {
+    private Optional<Player> simulation() {
         Board board = leaf.getBoard().clone();
         while (!board.isGameOver()) {
             ArrayList<int[]> moves = board.getPossibleMoves();
@@ -108,14 +109,14 @@ public class Tree {
     EFFECTS: updates all parent/grandparent etc. nodes of leaf with information on how many wins
         as well as how many times it has been visited (ie: # of games played)
      */
-    private void backpropagation(Player winner) {
+    private void backpropagation(Optional<Player> winner) {
         Node current = leaf;
         while (current.getParent() != null) {
             current.addGame();
-            if (winner == current.getPlayer()) {
+            if (winner.isPresent() && winner.get() == current.getPlayer()) {
                 // this node won
                 current.setWins(current.getWins() + 1);
-            } else if (winner != null) {
+            } else if (winner.isPresent()) {
                 // this node lost
                 current.setWins(current.getWins() - 1);
             }

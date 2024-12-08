@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -104,11 +105,11 @@ class BoardTest {
 
     @Test
     void testGetWinner() {
-        assertNull(defaultBoard.getWinner());
-        assertEquals("Gregory", player1WinBoard.getWinner().toString());
+        assertEquals(Optional.empty(), defaultBoard.getWinner());
+        assertEquals("Gregory", player1WinBoard.getWinner().get().toString());
 
         // Game technically not over here, but one player has a higher score right now.
-        assertEquals("Winner", player2WinBoard.getWinner().toString());
+        assertEquals("Winner", player2WinBoard.getWinner().get().toString());
     }
 
     @Test

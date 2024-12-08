@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Scanner;
 
 /*
@@ -286,7 +287,12 @@ public class Othello extends JPanel implements MouseListener, ActionListener, Ke
 
         String gameName = scan.nextLine();
 
-        gameHistory.add(gameName, game.getMoveHistory(), game.getBoard().getWinner());
+        Optional<Player> winner = game.getBoard().getWinner();
+        if (winner.isPresent()) {
+            gameHistory.add(gameName, game.getMoveHistory(), winner.get());
+        } else {
+            gameHistory.add(gameName, game.getMoveHistory());
+        }
         saveGameHistory();
     }
 
@@ -540,10 +546,21 @@ EFFECTS: none
 
             if (game.isOver()) {
                 if (mode == Mode.PLAYING) {
-                    String gameName = JOptionPane.showInputDialog(this, game.getBoard().getWinner() + " won!"
-                            + "\nEnter a name for this game:") + "";
+                    Optional<Player> winner = game.getBoard().getWinner();
+                    String gameName;
+                    if (winner.isPresent()) {
+                        gameName = JOptionPane.showInputDialog(this, winner.get() + " won!"
+                            + "\nEnter a name for this game:");
+                    } else {
+                        gameName = JOptionPane.showInputDialog(this, "The game is a draw!"
+                                + "\nEnter a name for this game:");
+                    }
                     System.out.println(game.getMoveHistory());
-                    gameHistory.add(gameName, game.getMoveHistory(), game.getBoard().getWinner());
+                    if (winner.isPresent()) {
+                        gameHistory.add(gameName, game.getMoveHistory(), winner.get());
+                    } else {
+                        gameHistory.add(gameName, game.getMoveHistory());
+                    }
                     saveGameHistory();
                 } else {
                     JOptionPane.showMessageDialog(this, game.getBoard().getWinner() + " won!");

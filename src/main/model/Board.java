@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static ui.Othello.listContainsArray;
 
@@ -72,19 +73,19 @@ public class Board implements Cloneable {
     /*
     EFFECTS: returns Player that won, null if tie.
      */
-    public Player getWinner() {
+    public Optional<Player> getWinner() {
         int player1count = countObjects(board, player1.getPiece());
         int player2count = countObjects(board, player2.getPiece());
 
         // player with most pieces at the end of the game wins
         if (player2count > player1count) {
-            return player2;
+            return Optional.ofNullable(player2);
         } else if (player1count > player2count) {
-            return player1;
+            return Optional.ofNullable(player1);
         }
 
         // tie if same amount of pieces
-        return null;
+        return Optional.empty();
     }
 
     /*
